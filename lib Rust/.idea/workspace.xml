@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated />
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="CargoProjects">
+    <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="cc236feb-6869-4a88-9914-eda21682f46e" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="x5ocd5ix" />
+  </component>
+  <component name="ProjectId" id="1jPydxaSeT6TeyxZMoWXZ5ahjqf" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="cf.first.check.clang-format" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="org.rust.cargo.project.model.PROJECT_DISCOVERY" value="true" />
+    <property name="settings.editor.selected.configurable" value="CPPToolchains" />
+  </component>
+  <component name="RunManager">
+    <configuration name="Test" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
+      <option name="channel" value="DEFAULT" />
+      <option name="command" value="test --package _2021_5A_3DJV_RustMLDll --lib tests" />
+      <option name="allFeatures" value="false" />
+      <option name="emulateTerminal" value="false" />
+      <option name="backtrace" value="SHORT" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$" />
+      <envs />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="RustProjectSettings">
+    <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
+    <option name="version" value="2" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="cc236feb-6869-4a88-9914-eda21682f46e" name="Default Changelist" comment="" />
+      <created>1603720112696</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1603720112696</updated>
+      <workItem from="1603720114520" duration="3036000" />
+      <workItem from="1603723225030" duration="2814000" />
+      <workItem from="1603913694882" duration="1591000" />
+      <workItem from="1603983801643" duration="10219000" />
+      <workItem from="1604048558252" duration="21481000" />
+      <workItem from="1604141094231" duration="9589000" />
+      <workItem from="1604309474355" duration="1051000" />
+      <workItem from="1604393297952" duration="14382000" />
+      <workItem from="1604481564664" duration="3067000" />
+      <workItem from="1604567832001" duration="8627000" />
+      <workItem from="1604653794853" duration="1962000" />
+      <workItem from="1604659251117" duration="31000" />
+      <workItem from="1604913453228" duration="14065000" />
+      <workItem from="1605176730480" duration="617000" />
+      <workItem from="1605272155704" duration="578000" />
+      <workItem from="1605471433270" duration="12958000" />
+      <workItem from="1605516802625" duration="5444000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="1877" height="279" key="GridCell.Tab.0.bottom" timestamp="1605527528483">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="279" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1605527528483" />
+    <state width="1877" height="279" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.2.1920.1040@1920.2.1920.1040" timestamp="1604924262680" />
+    <state width="1877" height="185" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1280.690@0.0.1920.1050" timestamp="1603724005452" />
+    <state width="1877" height="185" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1603725237091" />
+    <state width="1877" height="279" key="GridCell.Tab.0.center" timestamp="1605527528483">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="279" key="GridCell.Tab.0.center/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1605527528483" />
+    <state width="1877" height="279" key="GridCell.Tab.0.center/0.0.1920.1040/1920.2.1920.1040@1920.2.1920.1040" timestamp="1604924262680" />
+    <state width="1877" height="185" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1280.690@0.0.1920.1050" timestamp="1603724005452" />
+    <state width="1877" height="185" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1603725237091" />
+    <state width="1877" height="279" key="GridCell.Tab.0.left" timestamp="1605527528483">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="279" key="GridCell.Tab.0.left/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1605527528483" />
+    <state width="1877" height="279" key="GridCell.Tab.0.left/0.0.1920.1040/1920.2.1920.1040@1920.2.1920.1040" timestamp="1604924262680" />
+    <state width="1877" height="185" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1280.690@0.0.1920.1050" timestamp="1603724005451" />
+    <state width="1877" height="185" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1603725237091" />
+    <state width="1877" height="279" key="GridCell.Tab.0.right" timestamp="1605527528483">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="279" key="GridCell.Tab.0.right/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1605527528483" />
+    <state width="1877" height="279" key="GridCell.Tab.0.right/0.0.1920.1040/1920.2.1920.1040@1920.2.1920.1040" timestamp="1604924262680" />
+    <state width="1877" height="185" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1280.690@0.0.1920.1050" timestamp="1603724005452" />
+    <state width="1877" height="185" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1603725237091" />
+    <state width="1877" height="352" key="GridCell.Tab.1.bottom" timestamp="1603723176709">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="352" key="GridCell.Tab.1.bottom/0.0.1920.1050/1920.0.1280.690@0.0.1920.1050" timestamp="1603723176709" />
+    <state width="1877" height="352" key="GridCell.Tab.1.center" timestamp="1603723176709">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="352" key="GridCell.Tab.1.center/0.0.1920.1050/1920.0.1280.690@0.0.1920.1050" timestamp="1603723176709" />
+    <state width="1877" height="352" key="GridCell.Tab.1.left" timestamp="1603723176709">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="352" key="GridCell.Tab.1.left/0.0.1920.1050/1920.0.1280.690@0.0.1920.1050" timestamp="1603723176709" />
+    <state width="1877" height="352" key="GridCell.Tab.1.right" timestamp="1603723176709">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="352" key="GridCell.Tab.1.right/0.0.1920.1050/1920.0.1280.690@0.0.1920.1050" timestamp="1603723176709" />
+    <state x="461" y="165" key="SettingsEditor" timestamp="1603913948423">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="461" y="165" key="SettingsEditor/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1603913948423" />
+  </component>
+</project>
