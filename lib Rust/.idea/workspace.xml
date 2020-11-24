@@ -21,7 +21,14 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc236feb-6869-4a88-9914-eda21682f46e" name="Default Changelist" comment="" />
+    <list default="true" id="cc236feb-6869-4a88-9914-eda21682f46e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../ML-Rust-Project Unity/Assembly-CSharp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../ML-Rust-Project Unity/Assembly-CSharp.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ML-Rust-Project Unity/Library/ArtifactDB" beforeDir="false" afterPath="$PROJECT_DIR$/../ML-Rust-Project Unity/Library/ArtifactDB" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ML-Rust-Project Unity/Library/CurrentLayout-default.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/../ML-Rust-Project Unity/Library/CurrentLayout-default.dwlt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ML-Rust-Project Unity/Library/SourceAssetDB" beforeDir="false" afterPath="$PROJECT_DIR$/../ML-Rust-Project Unity/Library/SourceAssetDB" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ML-Rust-Project Unity/Library/StateCache/SceneView/9d2c57-mainStage.json" beforeDir="false" afterPath="$PROJECT_DIR$/../ML-Rust-Project Unity/Library/StateCache/SceneView/9d2c57-mainStage.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ML-Rust-Project Unity/obj/Debug/Assembly-CSharp.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../ML-Rust-Project Unity/obj/Debug/Assembly-CSharp.csprojAssemblyReference.cache" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -31,12 +38,13 @@
     <option name="formatViaClangd" value="false" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="x5ocd5ix" />
   </component>
   <component name="ProjectId" id="1jPydxaSeT6TeyxZMoWXZ5ahjqf" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -56,6 +64,11 @@
     <property name="settings.editor.selected.configurable" value="CPPToolchains" />
   </component>
   <component name="RunManager">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Test" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
       <option name="channel" value="DEFAULT" />
       <option name="command" value="test --package _2021_5A_3DJV_RustMLDll --lib tests" />
@@ -98,6 +111,13 @@
       <workItem from="1605272155704" duration="578000" />
       <workItem from="1605471433270" duration="12958000" />
       <workItem from="1605516802625" duration="5444000" />
+      <workItem from="1605528166996" duration="3305000" />
+      <workItem from="1605696792403" duration="13758000" />
+      <workItem from="1605786933308" duration="3034000" />
+      <workItem from="1605862220082" duration="11543000" />
+      <workItem from="1606044616740" duration="7363000" />
+      <workItem from="1606122893168" duration="11060000" />
+      <workItem from="1606210206031" duration="5369000" />
     </task>
     <servers />
   </component>
@@ -117,31 +137,31 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1877" height="279" key="GridCell.Tab.0.bottom" timestamp="1605527528483">
+    <state width="1877" height="213" key="GridCell.Tab.0.bottom" timestamp="1606215134657">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="279" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1605527528483" />
+    <state width="1877" height="213" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1606215134657" />
     <state width="1877" height="279" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.2.1920.1040@1920.2.1920.1040" timestamp="1604924262680" />
     <state width="1877" height="185" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1280.690@0.0.1920.1050" timestamp="1603724005452" />
     <state width="1877" height="185" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1603725237091" />
-    <state width="1877" height="279" key="GridCell.Tab.0.center" timestamp="1605527528483">
+    <state width="1877" height="213" key="GridCell.Tab.0.center" timestamp="1606215134657">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="279" key="GridCell.Tab.0.center/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1605527528483" />
+    <state width="1877" height="213" key="GridCell.Tab.0.center/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1606215134657" />
     <state width="1877" height="279" key="GridCell.Tab.0.center/0.0.1920.1040/1920.2.1920.1040@1920.2.1920.1040" timestamp="1604924262680" />
     <state width="1877" height="185" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1280.690@0.0.1920.1050" timestamp="1603724005452" />
     <state width="1877" height="185" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1603725237091" />
-    <state width="1877" height="279" key="GridCell.Tab.0.left" timestamp="1605527528483">
+    <state width="1877" height="213" key="GridCell.Tab.0.left" timestamp="1606215134657">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="279" key="GridCell.Tab.0.left/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1605527528483" />
+    <state width="1877" height="213" key="GridCell.Tab.0.left/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1606215134657" />
     <state width="1877" height="279" key="GridCell.Tab.0.left/0.0.1920.1040/1920.2.1920.1040@1920.2.1920.1040" timestamp="1604924262680" />
     <state width="1877" height="185" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1280.690@0.0.1920.1050" timestamp="1603724005451" />
     <state width="1877" height="185" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1603725237091" />
-    <state width="1877" height="279" key="GridCell.Tab.0.right" timestamp="1605527528483">
+    <state width="1877" height="213" key="GridCell.Tab.0.right" timestamp="1606215134657">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="279" key="GridCell.Tab.0.right/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1605527528483" />
+    <state width="1877" height="213" key="GridCell.Tab.0.right/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1606215134657" />
     <state width="1877" height="279" key="GridCell.Tab.0.right/0.0.1920.1040/1920.2.1920.1040@1920.2.1920.1040" timestamp="1604924262680" />
     <state width="1877" height="185" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1280.690@0.0.1920.1050" timestamp="1603724005452" />
     <state width="1877" height="185" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1603725237091" />
@@ -165,5 +185,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="165" key="SettingsEditor/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1603913948423" />
+    <state x="616" y="240" key="run.anything.popup" timestamp="1606131844835">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1606131844835" />
   </component>
 </project>

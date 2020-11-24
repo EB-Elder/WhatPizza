@@ -12,7 +12,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{C1D315A6-C876-8410-55F3-324B7197A0E1}</ProjectGuid>
+    <ProjectGuid>{2E1FE366-AC7F-25A2-B729-851F83C7DD39}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -62,31 +62,31 @@
      <Compile Include="Assets\Scripts\sphereExposer.cs" />
      <Compile Include="Assets\TestDll.cs" />
  <Reference Include="Unity.Timeline.Editor">
- <HintPath>F:/Projet 2021/Machine Learning/Unity/ML-Rust-Project/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+ <HintPath>F:/Projet 2021/Machine Learning/WhatPizza/ML-Rust-Project Unity/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.VSCode.Editor">
- <HintPath>F:/Projet 2021/Machine Learning/Unity/ML-Rust-Project/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+ <HintPath>F:/Projet 2021/Machine Learning/WhatPizza/ML-Rust-Project Unity/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.TextMeshPro.Editor">
- <HintPath>F:/Projet 2021/Machine Learning/Unity/ML-Rust-Project/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+ <HintPath>F:/Projet 2021/Machine Learning/WhatPizza/ML-Rust-Project Unity/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
- <HintPath>F:/Projet 2021/Machine Learning/Unity/ML-Rust-Project/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+ <HintPath>F:/Projet 2021/Machine Learning/WhatPizza/ML-Rust-Project Unity/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Timeline">
- <HintPath>F:/Projet 2021/Machine Learning/Unity/ML-Rust-Project/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+ <HintPath>F:/Projet 2021/Machine Learning/WhatPizza/ML-Rust-Project Unity/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
  </Reference>
  <Reference Include="Unity.CollabProxy.Editor">
- <HintPath>F:/Projet 2021/Machine Learning/Unity/ML-Rust-Project/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+ <HintPath>F:/Projet 2021/Machine Learning/WhatPizza/ML-Rust-Project Unity/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Rider.Editor">
- <HintPath>F:/Projet 2021/Machine Learning/Unity/ML-Rust-Project/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+ <HintPath>F:/Projet 2021/Machine Learning/WhatPizza/ML-Rust-Project Unity/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.TextMeshPro">
- <HintPath>F:/Projet 2021/Machine Learning/Unity/ML-Rust-Project/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+ <HintPath>F:/Projet 2021/Machine Learning/WhatPizza/ML-Rust-Project Unity/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.UI">
- <HintPath>F:/Projet 2021/Machine Learning/Unity/ML-Rust-Project/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+ <HintPath>F:/Projet 2021/Machine Learning/WhatPizza/ML-Rust-Project Unity/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>E:/Program Files (x86)/Unity/2019.3.8f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
