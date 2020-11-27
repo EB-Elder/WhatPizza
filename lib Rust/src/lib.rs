@@ -93,11 +93,12 @@ pub extern fn get_weights(model: *mut Vec<f64>, index: usize) -> f64
 
 #[no_mangle]
 pub extern fn predict_mlp_model_classification(model: *mut Vec<f64>,
-                                                  inputs: *mut f64, inputs_size: usize, number_hidden_layer: usize, neurones_count: *mut i32) -> f64 {
+                                                  inputs: *mut f64, inputs_size: usize, number_hidden_layer: usize, neurones_count: *mut i32) -> f64
+{
     let boxed_model;
     let inputs_slice;
     let neurones_count_slice;
-    let mut neurones_values:Vec<Vec<f64>> = Vec::with_capacity(number_hidden_layer);
+
 
 
     unsafe {
@@ -107,12 +108,10 @@ pub extern fn predict_mlp_model_classification(model: *mut Vec<f64>,
         neurones_count_slice = from_raw_parts(neurones_count, number_hidden_layer);
     }
 
-    for i in 0..neurones_count_slice.len(){
-        let mut tmp= Vec::with_capacity(i);
-        for k in 0..i{
-            tmp.push(0.0);
-        }
-        neurones_values.push(tmp);
+    let mut neurones_values = vec![vec![rand::thread_rng().gen_range(-1.0, 1.0); neurones_count_slice[0] as usize]; number_hidden_layer];
+
+    for i in 1..neurones_count_slice.len(){
+        neurones_values.push(vec![0.0; neurones_count_slice[i] as usize]);
     }
 
     let mut result = 0.0;
@@ -124,6 +123,7 @@ pub extern fn predict_mlp_model_classification(model: *mut Vec<f64>,
     {
         if HL == 0
         {
+
             for neurones in 0..neurones_count_slice[0]
             {
                 for entree in 0..inputs_size
@@ -169,7 +169,8 @@ pub extern fn predict_mlp_model_classification(model: *mut Vec<f64>,
 
 #[no_mangle]
 pub extern fn predict_linear_model_classification(model: *mut Vec<f64>,
-                                                  inputs: *mut f64, inputs_size: usize) -> f64 {
+                                                  inputs: *mut f64, inputs_size: usize) -> f64
+{
     let boxed_model;
     let inputs_slice;
 
@@ -198,7 +199,8 @@ pub extern fn predict_linear_model_classification(model: *mut Vec<f64>,
 
 #[no_mangle]
 pub extern fn predict_linear_model_multiclass_classification(model: *mut Vec<f64>,
-                                                             inputs: *mut f64, inputs_size: usize, class_count: usize) -> *mut f64 {
+                                                             inputs: *mut f64, inputs_size: usize, class_count: usize) -> *mut f64
+{
     let boxed_model;
     let inputs_slice;
 
@@ -445,7 +447,8 @@ pub extern fn train_model_class(model: *mut Vec<f64>, inputs: *mut f64, input_si
 }
 
 #[no_mangle]
-pub extern fn delete_native_array(arr: *mut f64) {
+pub extern fn delete_native_array(arr: *mut f64)
+{
     unsafe {
         Box::from_raw(arr);
     }
@@ -453,7 +456,8 @@ pub extern fn delete_native_array(arr: *mut f64) {
 
 
 #[no_mangle]
-pub extern fn delete_linear_model(model: *mut Vec<f64>) {
+pub extern fn delete_linear_model(model: *mut Vec<f64>)
+{
     unsafe {
         let boxed_model = Box::from_raw(model);
     };

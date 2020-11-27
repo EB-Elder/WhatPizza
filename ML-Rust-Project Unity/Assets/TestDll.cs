@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TestDll : MonoBehaviour
 {
@@ -13,6 +14,19 @@ public class TestDll : MonoBehaviour
 
     [SerializeField] private int epochs;
     
+    [Space(10)]
+    
+    [Header("Input Value in float")]
+    
+    [SerializeField] private int inputSize = 3;
+    [SerializeField] private int[] npl = new[] {4, 4};
+    [SerializeField] private double[] inputs = new[] {1.0, 1.0};
+    private int numberHiddenLayer;
+    
+    
+    [Range(0.0f, 1.0f)] 
+    [SerializeField] private double learningRate = 0.8f;
+
     // Start is called before the first frame update
 
     private int modelSize = 2;
@@ -68,22 +82,61 @@ public class TestDll : MonoBehaviour
         for (int i = 0; i < epochs; i++)
         {
             MlDllWrapper.trainModelClass(MyModel, trainningInput, trainningInput.Length, 2,
-                trainningOutput, trainningOutput.Length, 1, 0.5);
+                trainningOutput, trainningOutput.Length, 1, learningRate);
         }
         print("Model finished train");
-        
-        
+ 
+    }
+
+    void trainMLPModel(double[] trainningInput, double[] trainningOutput)
+    {
+        print("Model start trainning");
+
+        for (int i = 0; i < epochs; i++)
+        {
+            //Pour le moment seul le mono class est géré
+            MlDllWrapper.trainMLPModelClass(MyModel, numberHiddenLayer, npl, trainningInput, trainningInput.Length, inputSize,
+                trainningOutput, trainningOutput.Length, 1, learningRate);
+
+        }
+        print("Model finished train");
     }
     
     void Start()
     {
-        MyModel = MlDllWrapper.CreateLinearModel(modelSize);
+        numberHiddenLayer = npl.Length;
+        /*MyModel = MlDllWrapper.CreateLinearModel(modelSize);
         randomizeSpheres();
         //trainModel();
 
 
         
-        predictOnDataSet();
+        predictOnDataSet();*/
+
+        double[] trainningInput =
+        {
+            1.0, 0.0,
+            0.0, 1.0,
+            0.0, 0.0,
+            1.0, 1.0
+        };
+
+        double[] trainninOuput =
+        {
+             1.0 ,
+             1.0 , 
+             -1.0 ,
+             -1.0 
+        };
+
+        if(numberHiddenLayer == npl.Length)
+            MyModel = MlDllWrapper.CreateMLPModel(inputSize, numberHiddenLayer, npl);
+
+        print(MlDllWrapper.PredictMLPModelClassification(MyModel, inputs, inputSize, numberHiddenLayer, npl));
+        
+        trainMLPModel(trainningInput, trainninOuput);
+        
+        print(MlDllWrapper.PredictMLPModelClassification(MyModel, inputs, inputSize, numberHiddenLayer, npl));
     }
 
     // Update is called once per frame
@@ -92,17 +145,18 @@ public class TestDll : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            predictOnDataSet();
+            print(MlDllWrapper.PredictMLPModelClassification(MyModel, inputs, inputSize, numberHiddenLayer, npl));
+            //predictOnDataSet();
         }
         
         if (Input.GetKeyDown(KeyCode.T))
         {
-            trainModel();
+            //trainModel();
         }
         
         if (Input.GetKeyDown(KeyCode.R))
         {
-            MlDllWrapper.DeleteLinearModel(MyModel);
+            //MlDllWrapper.DeleteLinearModel(MyModel);
         }
     }
 }
