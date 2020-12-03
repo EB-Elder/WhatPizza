@@ -5998,7 +5998,7 @@ MonoBehaviour:
   redMat: {fileID: 2100000, guid: 8ae4663efa87c5f419f1173019f15a86, type: 2}
   epochs: 50
   inputSize: 2
-  npl: 02000000
+  npl: 02000000020000000200000002000000
   inputs:
   - 0.2
   - 0.2

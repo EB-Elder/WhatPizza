@@ -134,9 +134,9 @@ public class TestDll : MonoBehaviour
 
         print(MlDllWrapper.PredictMLPModelClassification(MyModel, inputs, inputSize, numberHiddenLayer, npl));
         
-        trainMLPModel(trainningInput, trainninOuput);
+        //trainMLPModel(trainningInput, trainninOuput);
         
-        print(MlDllWrapper.PredictMLPModelClassification(MyModel, inputs, inputSize, numberHiddenLayer, npl));
+        //print(MlDllWrapper.PredictMLPModelClassification(MyModel, inputs, inputSize, numberHiddenLayer, npl));
     }
 
     // Update is called once per frame
