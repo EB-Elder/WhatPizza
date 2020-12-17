@@ -8,6 +8,7 @@
       <e p="Assets" t="Include">
         <e p="MLDllWrapper.cs" t="Include" />
         <e p="Scripts" t="Include">
+          <e p="CSVReader.cs" t="Include" />
           <e p="sphereExposer.cs" t="Include" />
         </e>
         <e p="TestDll.cs" t="Include" />

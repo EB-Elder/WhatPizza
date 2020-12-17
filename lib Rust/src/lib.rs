@@ -346,7 +346,7 @@ pub extern fn train_mlp_model_class(model: *mut Vec<f64>, number_layer: usize, d
     let mut neurones_values = vec![vec![0.0; 0]; number_layer];
 
     neurones_values[0].push(1.0);
-    for i in 0..input_size
+    for i in 0..input_sample_size
     {
         neurones_values[0].push(input_slice[i]);
     }
@@ -414,7 +414,7 @@ pub extern fn train_mlp_model_class(model: *mut Vec<f64>, number_layer: usize, d
 
         ////////////////////////////////////////////////////////////////////////
 
-
+        //TODO:CRASH ICI POURQUOI ?
 
         for j in 1..neurones_count_slice[L] + 1
         {

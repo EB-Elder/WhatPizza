@@ -33,8 +33,8 @@ public static class MlDllWrapper
                                                 double[] ouputs, int outputSize, int outputSampleSize, double learningRate);
     
     [DllImport("_2021_5A_3DJV_RustMLDll", EntryPoint = "train_mlp_model_class")]
-    public static extern void trainMLPModelClass(System.IntPtr model, int numberHiddenLayer, int[] npl, double[] input, int inputSize, int inputSampleSize,
-        double[] ouputs, int outputSize, int epochs, double learningRate);
+    public static extern void trainMLPModelClass(System.IntPtr model, int numberLayer, int datasetSize, int[] npl, double[] input, int inputSize, int inputSampleSize,
+        double[] ouputs, int outputSize, int outputSampleSize, int epochs, double learningRate);
     
     
     
