@@ -9,7 +9,7 @@ public static class MlDllWrapper
     public static extern System.IntPtr CreateLinearModel(int inputSize);
     
     [DllImport("_2021_5A_3DJV_RustMLDll", EntryPoint = "create_mlp_model")]
-    public static extern System.IntPtr CreateMLPModel(int inputSize, int numberHiddenLayer, int[] neuronesCount);
+    public static extern System.IntPtr CreateMLPModel(int numberHiddenLayer, int[] neuronesCount);
 
     [DllImport("_2021_5A_3DJV_RustMLDll", EntryPoint = "predict_linear_model_classification")]
     public static extern double PredictLinearModelClassification(System.IntPtr model,
@@ -17,7 +17,7 @@ public static class MlDllWrapper
     
     [DllImport("_2021_5A_3DJV_RustMLDll", EntryPoint = "predict_mlp_model_classification")]
     public static extern double PredictMLPModelClassification(System.IntPtr model,
-        double[] inputs, int inputSize, int numberHiddenLayer, int[] npl);
+        double[] inputs, int inputSize, int numberLayer, int[] npl);
     
     
     [DllImport("_2021_5A_3DJV_RustMLDll", EntryPoint = "get_weights")]
@@ -34,7 +34,7 @@ public static class MlDllWrapper
     
     [DllImport("_2021_5A_3DJV_RustMLDll", EntryPoint = "train_mlp_model_class")]
     public static extern void trainMLPModelClass(System.IntPtr model, int numberHiddenLayer, int[] npl, double[] input, int inputSize, int inputSampleSize,
-        double[] ouputs, int outputSize, int outputSampleSize, double learningRate);
+        double[] ouputs, int outputSize, int epochs, double learningRate);
     
     
     

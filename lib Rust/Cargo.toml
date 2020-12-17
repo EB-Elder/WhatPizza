@@ -1,7 +1,7 @@
 [package]
 name = "_2021_5A_3DJV_RustMLDll"
 version = "0.1.0"
-authors = ["Nicolas Vidal <pro@nicolasvidal.fr>"]
+authors = ["Abdallah EL-HAJJAM"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

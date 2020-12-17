@@ -26,6 +26,22 @@ public class TestDll : MonoBehaviour
     
     [Range(0.0f, 1.0f)] 
     [SerializeField] private double learningRate = 0.8f;
+    
+    double[] trainningInput =
+    {
+        1.0, 0.0,
+        0.0, 1.0,
+        0.0, 0.0,
+        1.0, 1.0
+    };
+
+    double[] trainninOuput =
+    {
+        1.0 ,
+        1.0 , 
+        -1.0 ,
+        -1.0 
+    };
 
     // Start is called before the first frame update
 
@@ -35,6 +51,7 @@ public class TestDll : MonoBehaviour
     
     void randomizeSpheres()
     {
+        
         foreach (sphereExposer sphere in spheres)
         {
             sphere.myTransform.position = new Vector3(Random.Range(0.0f, 5.0f), Random.Range(0.0f, 5.0f), 0.0f);
@@ -113,24 +130,10 @@ public class TestDll : MonoBehaviour
         
         predictOnDataSet();*/
 
-        double[] trainningInput =
-        {
-            1.0, 0.0,
-            0.0, 1.0,
-            0.0, 0.0,
-            1.0, 1.0
-        };
+        
 
-        double[] trainninOuput =
-        {
-             1.0 ,
-             1.0 , 
-             -1.0 ,
-             -1.0 
-        };
-
-        if(numberHiddenLayer == npl.Length)
-            MyModel = MlDllWrapper.CreateMLPModel(inputSize, numberHiddenLayer, npl);
+        
+        MyModel = MlDllWrapper.CreateMLPModel(numberHiddenLayer, npl);
 
         print(MlDllWrapper.PredictMLPModelClassification(MyModel, inputs, inputSize, numberHiddenLayer, npl));
         
@@ -151,12 +154,13 @@ public class TestDll : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.T))
         {
+            trainMLPModel(trainningInput, trainninOuput);
             //trainModel();
         }
         
         if (Input.GetKeyDown(KeyCode.R))
         {
-            //MlDllWrapper.DeleteLinearModel(MyModel);
+            MlDllWrapper.DeleteLinearModel(MyModel);
         }
     }
 }

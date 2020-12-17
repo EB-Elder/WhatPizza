@@ -18,15 +18,12 @@ fn sign(value: f64) -> f64
     {
         return 1.0;
     }
-    else
-    {
-        return -1.0;
-    }
+    return -1.0;
 }
 
 fn convert1dto2d(model:  &Vec<f64>, number_layer: usize, neurones_count_slice:  &[i32], input_size: usize) -> Vec<Vec<f64>>
 {
-    let mut model_result = vec![vec![0.0; input_size + 1];number_layer];
+    let mut model_result = vec![vec![0.0; input_size + 1];1];
     let mut number_hidden_layer = number_layer - 1;
 
     let mut tmp: Vec<f64>;
@@ -47,6 +44,7 @@ fn convert1dto2d(model:  &Vec<f64>, number_layer: usize, neurones_count_slice:  
 
         for depth in 0..neurones_count_slice[width as usize]+1
         {
+
             tmp.push(model[column + depth as usize]);
         }
 
@@ -65,10 +63,67 @@ fn convert2dto1d(model: &mut Vec<f64>, vec_model:  &Vec<Vec<f64>>)
 
         for y in 0..vec_model[x].len()
         {
-            //println!("{}", vec_model[x][y]);
-            println!("{}", model[index_to_modify]);
-            //model[index_to_modify] =
-            //index_to_modify+=1;
+            model[index_to_modify] = vec_model[x][y];
+            index_to_modify+=1;
+        }
+    }
+}
+
+fn weight_array_1dto3d(model:  &Vec<f64>, npl:  &[i32]) -> Vec<Vec<Vec<f64>>>
+{
+    let mut result = vec![vec![vec![0.0; 0]]];
+
+    let mut counter:usize = 0;
+    for l in 0..npl.len()
+    {
+
+        if l == 0
+        {
+            result[0] = vec![vec![model[counter];1]];
+            counter+=1;
+            continue
+        }
+        let mut tmp0:Vec<Vec<f64>> = Vec::new();
+        for i in 0..npl[l-1]+1
+        {
+            let mut tmp1:Vec<f64>= Vec::new();
+            for j in 0..npl[l] + 1
+            {
+                tmp1.push(model[counter]);
+                counter+=1;
+            }
+            tmp0.push(tmp1);
+        }
+        result.push(tmp0);
+    }
+
+    result
+}
+
+fn weight_array_3dto1d(model:  &mut Vec<f64>,vec_boxed_model:  &Vec<Vec<Vec<f64>>>, npl:  &[i32])
+{
+    let mut counter:usize = 0;
+    let mut boxed_model;
+
+    unsafe {
+        boxed_model = &mut *model;
+    }
+
+    for l in 0..npl.len()
+    {
+
+        if l == 0
+        {
+            counter+=1;
+            continue
+        }
+        for i in 0..npl[l-1]+1
+        {
+            for j in 0..npl[l] + 1
+            {
+                boxed_model[counter] = vec_boxed_model[l][i as usize][j as usize];
+                counter+=1;
+            }
         }
     }
 }
@@ -96,31 +151,41 @@ pub extern fn create_linear_model(input_size: usize) -> *mut Vec<f64> {
 }
 
 #[no_mangle]
-pub extern fn create_mlp_model(input_size: usize, number_hidden_layer: usize, neurones_count: *mut i32) -> *mut Vec<f64> {
+pub extern fn create_mlp_model(number_layer: usize, neurones_count: *mut i32) -> *mut Vec<f64> {
 
 
-    //TODO: CREATION DE TABLEAU 2D
     //Initialisation du model lineaire avec une taille défini + un biais
 
-    let mut neurones_count_slice;
-    let mut final_capacity:usize = input_size +  1;
+
+
+
+    //Nombre de neurones par couche cachées
+    let mut npl;
     unsafe {
-        neurones_count_slice = from_raw_parts(neurones_count, number_hidden_layer);
+        npl = from_raw_parts(neurones_count, number_layer);
     }
 
-
-    for i in 0..number_hidden_layer{
-        final_capacity+=neurones_count_slice[i] as usize + 1;
-    }
+    let mut weights = vec![0.0; 0];
 
     //Ajout de toutes les neurones et des biais
-    let mut weights = Vec::with_capacity(final_capacity);
+
     //Initialisation des poids
-    for i in 0..final_capacity {
-        weights.push(rand::thread_rng().gen_range(-1.0, 1.0));
-
+    for l in 0..(npl.len())
+    {
+        if l==0
+        {
+            // pour la couche d'entrée 100.0 étant pour nous l'équivalent de NONE
+            weights.push(100.0);
+            continue
+        }
+        for i in 0..(npl[l-1]+1)
+        {
+            for j in 0..(npl[l] + 1)
+            {
+                weights.push(rand::thread_rng().gen_range(-1.0, 1.0))
+            }
+        }
     }
-
 
     //Fuite mémoire volontaire afin de pouvoir renvoyer un pointeur
     let boxed_weights = Box::new(weights);
@@ -142,12 +207,12 @@ pub extern fn get_weights(model: *mut Vec<f64>, index: usize) -> f64
 
 #[no_mangle]
 pub extern fn predict_mlp_model_classification(model: *mut Vec<f64>,
-                                                  inputs: *mut f64, inputs_size: usize, number_hidden_layer: usize, neurones_count: *mut i32) -> f64
+                                                  inputs: *mut f64, inputs_size: usize, number_layer: usize, neurones_count: *mut i32) -> f64
 {
     let mut boxed_model;
     let inputs_slice;
     let neurones_count_slice;
-    let mut boxedModelLayers = number_hidden_layer + 1;
+    let mut L = number_layer - 1;
 
 
 
@@ -155,71 +220,43 @@ pub extern fn predict_mlp_model_classification(model: *mut Vec<f64>,
         //Récupération des contenus des pointeurs
         boxed_model = &mut *model;
         inputs_slice = from_raw_parts(inputs, inputs_size);
-        neurones_count_slice = from_raw_parts(neurones_count, number_hidden_layer);
+        neurones_count_slice = from_raw_parts(neurones_count, number_layer);
     }
 
-    let mut vec_boxed_model = convert1dto2d(boxed_model, boxedModelLayers, neurones_count_slice, inputs_size);
+    let mut vec_boxed_model = weight_array_1dto3d(boxed_model, neurones_count_slice);
 
+    let mut neurones_values = vec![vec![0.0; 0]; number_layer];
 
+    neurones_values[0].push(1.0);
+    for i in 0..inputs_size
+    {
+        neurones_values[0].push(inputs_slice[i])
+    }
 
-    //TODO: Revoir la création de tableau
-    let mut neurones_values = vec![vec![0.0; neurones_count_slice[0] as usize]; number_hidden_layer];
 
     for i in 1..neurones_count_slice.len(){
-        neurones_values[i] = vec![0.0; neurones_count_slice[i] as usize];
+
+        neurones_values[i].push(1.0);
+        for j in 0..neurones_count_slice[i]
+        {
+            neurones_values[i].push(0.0)
+        }
     }
 
-    let mut result = 0.0;
-    let biais = 1.0;
-
-    //prédictions
-
-    for HL in 0..number_hidden_layer
+    for l in 1..(L + 1)
     {
-        if HL == 0
+        for j in 1..(neurones_count_slice[l] + 1)
         {
-
-            for neurones in 0..neurones_count_slice[0]
+            let mut sum:f64 = 0.0;
+            for i in 0..(neurones_count_slice[l - 1] + 1)
             {
-                for entree in 0..inputs_size
-                {
-                    neurones_values[HL][neurones as usize] += vec_boxed_model[0][entree] * inputs_slice[entree];
-                }
-                neurones_values[HL][neurones as usize] += vec_boxed_model[0][inputs_size as usize] * biais;
-                neurones_values[HL][neurones as usize] = sign(neurones_values[HL][neurones as usize]);
-
+                sum += neurones_values[l - 1][i as usize] * vec_boxed_model[l][i as usize][j as usize];
             }
-
+            neurones_values[l][j as usize] = sum.tanh()
         }
-       else if HL == number_hidden_layer-1
-        {
-            for entree in 0..neurones_count_slice[HL]
-            {
-                result += vec_boxed_model[HL][entree as usize] * neurones_values[HL as usize][entree as usize];
-            }
-            result += vec_boxed_model[HL][neurones_count_slice[HL] as usize] * biais;
-            result = sign(result);
-        }
-        else
-        {
-            for neurones in 0..neurones_count_slice[HL]
-            {
-                for entree in 0..neurones_count_slice[HL-1]
-                {
-                    neurones_values[HL][neurones as usize] += vec_boxed_model[HL][entree as usize] * neurones_values[HL-1][entree as usize];
-                }
-
-                neurones_values[HL][neurones as usize] += vec_boxed_model[HL][neurones_count_slice[HL-1] as usize] * biais;
-                neurones_values[HL][neurones as usize] = sign(neurones_values[HL][neurones as usize]);
-            }
-
-        }
-
     }
 
-    convert2dto1d(boxed_model, &vec_boxed_model);
-
-    result
+    neurones_values.last().cloned().unwrap()[0]
 
 }
 
@@ -285,161 +322,132 @@ pub extern fn predict_linear_model_multiclass_classification(model: *mut Vec<f64
 
 
 #[no_mangle]
-pub extern fn train_mlp_model_class(model: *mut Vec<f64>, number_hidden_layer: usize, neurones_count: *mut i32,  inputs: *mut f64, input_size: usize, input_sample_size: usize,
-                                output: *mut f64, output_size: usize, output_sample_size: usize, learning_rate: f64)
+pub extern fn train_mlp_model_class(model: *mut Vec<f64>, number_layer: usize, dataset_size: usize, neurones_count: *mut i32,  inputs: *mut f64, input_size: usize, input_sample_size: usize,
+                                output: *mut f64, output_size: usize, output_sample_size: usize, epochs: i32, learning_rate: f64)
 {
     let mut boxed_model;
-    let mut input_slice;
-    let mut output_slice;
-    let mut neurones_count_slice;
-    let mut boxedModelLayers = number_hidden_layer + 1;
+    let input_slice;
+    let output_slice;
+    let neurones_count_slice;
+    let L = number_layer - 1;
+
+
 
 
     unsafe {
         boxed_model = &mut *model;
         input_slice = from_raw_parts(inputs, input_size);
         output_slice = from_raw_parts(output, output_size);
-        neurones_count_slice = from_raw_parts(neurones_count, number_hidden_layer);
+        neurones_count_slice = from_raw_parts(neurones_count, number_layer);
     }
 
-    let mut vec_boxed_model = convert1dto2d(boxed_model, boxedModelLayers, neurones_count_slice, inputs_size);
+    let mut vec_boxed_model = weight_array_1dto3d(boxed_model, neurones_count_slice);
 
-    let mut neurones_values = vec![vec![0.0; neurones_count_slice[0] as usize]; number_hidden_layer];
-    let mut errors:Vec<Vec<f64>> = vec![vec![0.0; input_sample_size]; number_hidden_layer + 1];
+    let mut neurones_values = vec![vec![0.0; 0]; number_layer];
+
+    neurones_values[0].push(1.0);
+    for i in 0..input_size
+    {
+        neurones_values[0].push(input_slice[i]);
+    }
+
 
     for i in 1..neurones_count_slice.len(){
-        neurones_values[i] = vec![0.0; neurones_count_slice[i] as usize];
+
+        neurones_values[i].push(1.0);
+        for j in 0..neurones_count_slice[i]
+        {
+            neurones_values[i].push(0.0)
+        }
     }
 
+    let mut deltas:Vec<Vec<f64>> = Vec::new();
+
+    for i in 0..number_layer
+    {
+        let mut tmp:Vec<f64> = Vec::new();
+        for j in 0..neurones_count_slice[i]+1
+        {
+                tmp.push(0.0);
+        }
+        deltas.push(tmp);
+    }
 
     for i in 0..neurones_count_slice.len()
     {
-        errors[i+1] = vec![0.0; neurones_count_slice[i] as usize];
+        deltas[i+1] = vec![0.0; neurones_count_slice[i] as usize];
     }
-
-    let dataset_size = output_size/output_sample_size;
 
 
     let mut result=0.0;
     let biais = 1.0;
 
-    for i in 0..dataset_size{
+    for it in 0..epochs
+    {
+        let mut k = rand::thread_rng().gen_range(0, dataset_size);
+        let mut sampled_input:Vec<f64> = Vec::new();
+        let mut sampled_output:Vec<f64> = Vec::new();
 
-
-
-        for j in (i * output_sample_size).. (i * output_sample_size + output_sample_size)
+        for i in input_sample_size * k..input_sample_size * (k + 1)
         {
+            sampled_input.push(input_slice[i]);
+        }
 
-            //TODO: Optimiser la prédictions ici
-            //Prédictions
+        for i in output_sample_size * k..output_sample_size * (k + 1)
+        {
+            sampled_output.push(output_slice[i]);
+        }
 
-
-            for HL in 0..number_hidden_layer
+        ///////////////////////PREDICTIONS///////////////////////////////////////
+        for l in 1..(L + 1)
+        {
+            for j in 1..(neurones_count_slice[l] + 1)
             {
-                if HL == 0
+                let mut sum:f64 = 0.0;
+                for i in 0..(neurones_count_slice[l - 1] + 1)
                 {
-
-                    for neurones in 0..neurones_count_slice[0]
-                    {
-                        for entree in 0..input_sample_size
-                        {
-                            neurones_values[HL][neurones as usize] += boxed_model[0 * boxedModelLayers + entree] * input_slice[i*input_sample_size+entree];
-                        }
-                        neurones_values[HL][neurones as usize] += boxed_model[0 * boxedModelLayers + neurones_count_slice[0] as usize] * biais;
-                        neurones_values[HL][neurones as usize] = sign(neurones_values[HL][neurones as usize]);
-
-                    }
-
+                    sum += neurones_values[l - 1][i as usize] * vec_boxed_model[l][i as usize][j as usize];
                 }
-                else if HL == number_hidden_layer-1
-                {
-                    for entree in 0..neurones_count_slice[HL]
-                    {
-                        result += boxed_model[HL * boxedModelLayers + entree as usize] * neurones_values[HL as usize][entree as usize];
-                    }
-                    result += boxed_model[HL * boxedModelLayers + neurones_count_slice[HL] as usize] * biais;
-                    result = sign(result);
-                }
-                else
-                {
-                    for neurones in 0..neurones_count_slice[HL]
-                    {
-                        for entree in 0..neurones_count_slice[HL-1]
-                        {
-                            neurones_values[HL][neurones as usize] += boxed_model[HL * boxedModelLayers + entree as usize] * neurones_values[HL-1][entree as usize];
-                        }
-
-                        neurones_values[HL][neurones as usize] += boxed_model[HL * boxedModelLayers + neurones_count_slice[HL-1] as usize] * biais;
-                        neurones_values[HL][neurones as usize] = sign(neurones_values[HL][neurones as usize]);
-                    }
-
-                }
-
-            }
-
-
-
-            let mut output_error = (1.0 - (result * result)) * (result - output_slice[j]);
-
-            let mut sum = 0.0;
-            for computed_neurones in 0..neurones_count_slice[(number_hidden_layer-1)]
-            {
-                sum += boxed_model[(boxedModelLayers-2) * boxedModelLayers + computed_neurones as usize] * output_error;
-
-            }
-            for computed_neurones in 0..neurones_count_slice[(number_hidden_layer-1)]
-            {
-                errors[(number_hidden_layer-1)][computed_neurones as usize] = (1.0 - power(neurones_values[(number_hidden_layer-1)][computed_neurones as usize], 2)) * sum;
-            }
-
-            for hidden_layer in (number_hidden_layer..0).rev()
-            {
-                sum = 0.0;
-                if hidden_layer == 0
-                {
-                    for computed_neurones in 0..neurones_count_slice[hidden_layer]
-                    {
-                        sum += boxed_model[hidden_layer * boxedModelLayers + computed_neurones as usize] * errors[hidden_layer][computed_neurones as usize];
-
-                    }
-
-                    for computed_neurones in 0..input_sample_size
-                    {
-                        errors[0][computed_neurones] = (1.0 - power(neurones_values[(hidden_layer-1)][computed_neurones as usize], 2)) * sum;
-                    }
-                }
-                else
-                {
-
-                    for computed_neurones in 0..neurones_count_slice[hidden_layer]
-                    {
-                        sum += boxed_model[hidden_layer * boxedModelLayers + computed_neurones as usize] * errors[hidden_layer][computed_neurones as usize];
-
-                    }
-
-                    for computed_neurones in 0..neurones_count_slice[hidden_layer-1]
-                    {
-                        errors[(hidden_layer-1)][computed_neurones as usize] = (1.0 - power(neurones_values[(hidden_layer-1)][computed_neurones as usize], 2)) * sum;
-                    }
-                }
-            }
-
-            for input in 0..input_sample_size
-            {
-                boxed_model[0*boxedModelLayers+input] = boxed_model[0*boxedModelLayers+input] - learning_rate * input_slice[i * input_sample_size + input] * errors[0][input];
-            }
-
-            for HL in 0..number_hidden_layer
-            {
-                for neurones in 0..neurones_count_slice[HL]
-                {
-                    boxed_model[(HL+1)*boxedModelLayers+neurones as usize] = boxed_model[(HL+1)*boxedModelLayers+neurones as usize] - learning_rate * neurones_values[HL][neurones as usize] * errors[(HL+1)][neurones as usize];
-                }
+                neurones_values[l][j as usize] = sum.tanh();
             }
         }
 
+        ////////////////////////////////////////////////////////////////////////
+
+
+
+        for j in 1..neurones_count_slice[L] + 1
+        {
+            deltas[L][j as usize] = neurones_values[L][j as usize] - sampled_output[j as usize - 1];
+        }
+
+        for l in (2..L + 1).rev()
+        {
+            for i in 0..neurones_count_slice[l - 1]+1
+            {
+                let mut sum = 0.0;
+                for j in 1..neurones_count_slice[l] + 1
+                {
+                    sum += vec_boxed_model[l][i as usize][j as usize] * deltas[l][j as usize]
+                }
+                deltas[l as usize - 1][i as usize] = (1.0 - power(neurones_values[l as usize - 1][i as usize], 2)) * sum;
+            }
+        }
+
+        for l in 1..L + 1
+        {
+            for i in 0..neurones_count_slice[l - 1] + 1
+            {
+                for j in 1..neurones_count_slice[l] + 1
+                {
+                    vec_boxed_model[l][i as usize][j as usize] -= learning_rate * neurones_values[l - 1][i as usize] * deltas[l][j as usize];
+                }
+            }
+        }
     }
-    convert2dto1d(boxed_model, &vec_boxed_model);
+
+    weight_array_3dto1d(boxed_model, &vec_boxed_model, &neurones_count_slice);
+
 }
 
 
@@ -516,8 +524,3 @@ pub extern fn delete_linear_model(model: *mut Vec<f64>)
     };
 }
 
-
-#[no_mangle]
-pub extern fn my_add(a: f64, b: f64) -> f64 {
-    a + b
-}
