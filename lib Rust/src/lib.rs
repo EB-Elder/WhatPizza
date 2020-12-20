@@ -209,11 +209,10 @@ pub extern fn get_weights(model: *mut Vec<f64>, index: usize) -> f64
 pub extern fn predict_mlp_model_classification(model: *mut Vec<f64>,
                                                   inputs: *mut f64, inputs_size: usize, number_layer: usize, neurones_count: *mut i32) -> f64
 {
-    let mut boxed_model;
+    let boxed_model;
     let inputs_slice;
     let neurones_count_slice;
-    let mut L = number_layer - 1;
-
+    let L = number_layer - 1;
 
 
     unsafe {
@@ -256,7 +255,7 @@ pub extern fn predict_mlp_model_classification(model: *mut Vec<f64>,
         }
     }
 
-    neurones_values.last().cloned().unwrap()[0]
+    neurones_values.last().cloned().unwrap().last().cloned().unwrap()
 
 }
 
@@ -368,19 +367,16 @@ pub extern fn train_mlp_model_class(model: *mut Vec<f64>, number_layer: usize, d
         let mut tmp:Vec<f64> = Vec::new();
         for j in 0..neurones_count_slice[i]+1
         {
+            if j == 0{
+                tmp.push(1.0);
+            }
+            else {
                 tmp.push(0.0);
+            }
+
         }
         deltas.push(tmp);
     }
-
-    for i in 0..neurones_count_slice.len()
-    {
-        deltas[i+1] = vec![0.0; neurones_count_slice[i] as usize];
-    }
-
-
-    let mut result=0.0;
-    let biais = 1.0;
 
     for it in 0..epochs
     {

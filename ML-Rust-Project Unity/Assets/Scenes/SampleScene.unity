@@ -5996,13 +5996,27 @@ MonoBehaviour:
   - {fileID: 1366307075}
   blueMat: {fileID: 2100000, guid: 318084ea9eceb194d97f9fadfb208884, type: 2}
   redMat: {fileID: 2100000, guid: 8ae4663efa87c5f419f1173019f15a86, type: 2}
-  epochs: 2000
+  epochs: 100
   inputSize: 2
   npl: 020000000200000001000000
   inputs:
   - 1
   - 1
-  learningRate: 0.5
+  learningRate: 0.10000000149011612
+  trainningInput:
+  - 1
+  - 0
+  - 0
+  - 1
+  - 0
+  - 0
+  - 1
+  - 1
+  trainninOuput:
+  - 1
+  - 1
+  - -1
+  - -1
 --- !u!4 &1248952314
 Transform:
   m_ObjectHideFlags: 0

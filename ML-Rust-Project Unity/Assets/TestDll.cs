@@ -125,12 +125,7 @@ public class TestDll : MonoBehaviour
         predictOnDataSet();*/
 
         MyModel = MlDllWrapper.CreateMLPModel(numberLayer, npl);
-
-        print(MlDllWrapper.PredictMLPModelClassification(MyModel, inputs, inputSize, numberLayer, npl));
         
-        trainMLPModel(trainningInput, trainninOuput, numberLayer);
-        
-        //print(MlDllWrapper.PredictMLPModelClassification(MyModel, inputs, inputSize, numberHiddenLayer, npl));
     }
 
     // Update is called once per frame
@@ -139,7 +134,15 @@ public class TestDll : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            print(MlDllWrapper.PredictMLPModelClassification(MyModel, inputs, inputSize, numberLayer, npl));
+            double result = MlDllWrapper.PredictMLPModelClassification(MyModel, inputs, inputSize, numberLayer, npl);
+            if (result > 0)
+            {
+                print(1);
+            }
+            else
+            {
+                print(-1);
+            }
             //predictOnDataSet();
         }
         
