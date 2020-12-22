@@ -1,11 +1,10 @@
 use std::slice::{from_raw_parts};
 use rand::Rng;
 
-
 fn power(a: f64, power: i32) -> f64
 {
     let mut result = a;
-    for i in 0..power
+    for i in 1..power
     {
         result *= a;
     }
@@ -342,14 +341,15 @@ pub extern fn train_mlp_model_class(model: *mut Vec<f64>, number_layer: usize, d
 
     let mut vec_boxed_model = weight_array_1dto3d(boxed_model, neurones_count_slice);
 
+    let mut deltas:Vec<Vec<f64>> = Vec::new();
+
     let mut neurones_values = vec![vec![0.0; 0]; number_layer];
 
     neurones_values[0].push(1.0);
     for i in 0..input_sample_size
     {
-        neurones_values[0].push(input_slice[i]);
+        neurones_values[0].push(0.0);
     }
-
 
     for i in 1..neurones_count_slice.len(){
 
@@ -359,8 +359,6 @@ pub extern fn train_mlp_model_class(model: *mut Vec<f64>, number_layer: usize, d
             neurones_values[i].push(0.0)
         }
     }
-
-    let mut deltas:Vec<Vec<f64>> = Vec::new();
 
     for i in 0..number_layer
     {
@@ -380,6 +378,8 @@ pub extern fn train_mlp_model_class(model: *mut Vec<f64>, number_layer: usize, d
 
     for it in 0..epochs
     {
+
+
         let mut k = rand::thread_rng().gen_range(0, dataset_size);
         let mut sampled_input:Vec<f64> = Vec::new();
         let mut sampled_output:Vec<f64> = Vec::new();
@@ -389,10 +389,18 @@ pub extern fn train_mlp_model_class(model: *mut Vec<f64>, number_layer: usize, d
             sampled_input.push(input_slice[i]);
         }
 
+        for j in 0..sampled_input.len()
+        {
+            neurones_values[0][j+1] = sampled_input[j];
+        }
+
         for i in output_sample_size * k..output_sample_size * (k + 1)
         {
             sampled_output.push(output_slice[i]);
         }
+
+
+
 
         ///////////////////////PREDICTIONS///////////////////////////////////////
         for l in 1..(L + 1)
@@ -409,8 +417,6 @@ pub extern fn train_mlp_model_class(model: *mut Vec<f64>, number_layer: usize, d
         }
 
         ////////////////////////////////////////////////////////////////////////
-
-        //TODO:CRASH ICI POURQUOI ?
 
         for j in 1..neurones_count_slice[L] + 1
         {

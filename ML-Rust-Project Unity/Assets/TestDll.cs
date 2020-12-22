@@ -27,7 +27,7 @@ public class TestDll : MonoBehaviour
     [Range(0.0f, 1.0f)] 
     [SerializeField] private double learningRate = 0.8f;
     
-    [SerializeField] private double[] trainningInput = new []
+    double[] trainningInput = new []
     {
         1.0, 0.0,
         0.0, 1.0,
@@ -35,7 +35,7 @@ public class TestDll : MonoBehaviour
         1.0, 1.0
     };
 
-    [SerializeField] private double[] trainninOuput = new []
+    double[] trainninOuput = new []
     {
         1.0 ,
         1.0 , 
@@ -109,6 +109,8 @@ public class TestDll : MonoBehaviour
     {
         print("Model start trainning");
 
+        print(npl[0]);
+        
         MlDllWrapper.trainMLPModelClass(MyModel, nplSize, 4, npl, trainningInput, trainningInput.Length, npl[0],
                 trainningOutput, trainningOutput.Length, npl.Last(), epochs, learningRate);
         
@@ -134,7 +136,19 @@ public class TestDll : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            double result = MlDllWrapper.PredictMLPModelClassification(MyModel, inputs, inputSize, numberLayer, npl);
+            List<double[]> test = new List<double[]>();
+
+            test.Add(new []{0.0, 1.0});
+            test.Add(new []{1.0, 0.0});
+            test.Add(new []{0.0, 0.0});
+            test.Add(new []{1.0, 1.0});
+
+            for (int i = 0; i < 4; i++)
+            {
+                print(MlDllWrapper.PredictMLPModelClassification(MyModel, test[i], inputSize, numberLayer, npl));
+            }
+            
+            /*double result = MlDllWrapper.PredictMLPModelClassification(MyModel, inputs, inputSize, numberLayer, npl);
             if (result > 0)
             {
                 print(1);
@@ -142,7 +156,7 @@ public class TestDll : MonoBehaviour
             else
             {
                 print(-1);
-            }
+            }*/
             //predictOnDataSet();
         }
         
