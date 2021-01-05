@@ -1,5 +1,7 @@
 use std::slice::{from_raw_parts};
 use rand::Rng;
+use nalgebra::*;
+
 
 fn power(a: f64, power: i32) -> f64
 {
@@ -13,11 +15,13 @@ fn power(a: f64, power: i32) -> f64
 
 fn sign(value: f64) -> f64
 {
+
     if value >= 0.0
     {
         return 1.0;
     }
     return -1.0;
+
 }
 
 fn convert1dto2d(model:  &Vec<f64>, number_layer: usize, neurones_count_slice:  &[i32], input_size: usize) -> Vec<Vec<f64>>
@@ -127,6 +131,34 @@ fn weight_array_3dto1d(model:  &mut Vec<f64>,vec_boxed_model:  &Vec<Vec<Vec<f64>
     }
 }
 
+fn _predict_linear_model(model: *mut Vec<f64>, inputs: &Vec<f64>, inputs_size: usize,  is_classification: bool) -> f64
+{
+    let boxed_model;
+
+    unsafe {
+        //Récupération des contenus des pointeurs
+        boxed_model = model.as_ref().unwrap();
+    }
+
+    let mut sum = 0.0;
+
+    //prédictions
+    for i  in 0..inputs.len() {
+        sum += inputs[i] * boxed_model[i];
+    }
+
+    if is_classification
+    {
+        return sign(sum);
+    }
+    sum
+
+
+}
+
+
+//////////////////////////////////////////////////LINEAR MODEL///////////////////////////////////////////////////////////
+
 #[no_mangle]
 pub extern fn create_linear_model(input_size: usize) -> *mut Vec<f64> {
 
@@ -141,13 +173,116 @@ pub extern fn create_linear_model(input_size: usize) -> *mut Vec<f64> {
     //Initialisation du poids du biais
     weights.push(rand::thread_rng().gen_range(-1.0, 1.0));
 
-
     //Fuite mémoire volontaire afin de pouvoir renvoyer un pointeur
     let boxed_weights = Box::new(weights);
     let boxed_ref = Box::leak(boxed_weights);
 
     boxed_ref
 }
+
+#[no_mangle]
+pub extern fn predict_linear_model(model: *mut Vec<f64>, inputs: *mut f64, inputs_size: usize,  is_classification: bool) -> f64
+{
+    let boxed_model;
+    let inputs_slice;
+
+    unsafe {
+        //Récupération des contenus des pointeurs
+        boxed_model = model.as_ref().unwrap();
+        inputs_slice = from_raw_parts(inputs, inputs_size);
+    }
+
+    let mut sum = 0.0;
+
+    //prédictions
+    for i  in 0..inputs_slice.len() {
+        sum += inputs_slice[i] * boxed_model[i];
+    }
+
+    //Sachant que le biais = 1.0
+    sum += boxed_model[inputs_slice.len()];
+
+    if is_classification
+    {
+        return sign(sum);
+    }
+    sum
+
+
+}
+
+#[no_mangle]
+pub extern fn train_linear_model_class(model: *mut Vec<f64>, inputs: *mut f64, input_size: usize, input_sample_size: usize,
+                                       output: *mut f64, output_size: usize, output_sample_size: usize, learning_rate: f64,  is_classification: bool, epochs: i32)
+{
+    let mut boxed_model;
+    let mut input_slice;
+    let mut output_slice;
+    unsafe {
+        boxed_model = &mut *model;
+        input_slice = from_raw_parts(inputs, input_size);
+        output_slice = from_raw_parts(output, output_size);
+    }
+
+    let dataset_size = output_size/output_sample_size;
+
+
+    for it in 0..epochs
+    {
+        if is_classification
+        {
+            let biais = 1.0;
+
+            let mut k = rand::thread_rng().gen_range(0, dataset_size);
+            let mut sampled_input: Vec<f64> = Vec::new();
+            let mut sampled_output: Vec<f64> = Vec::new();
+
+            for i in input_sample_size * k..input_sample_size * (k + 1)
+            {
+                sampled_input.push(input_slice[i]);
+            }
+
+            sampled_input.push(1.0);
+
+            for i in output_sample_size * k..output_sample_size * (k + 1)
+            {
+                sampled_output.push(output_slice[i]);
+            }
+
+            let result = _predict_linear_model(model, &sampled_input, input_size, is_classification);
+
+            //Mise a jour des poids
+            // W[i] = W[i] + r * error * Input[i]
+
+            for l in 0..input_sample_size + 1
+            {
+                for z in 0..output_sample_size
+                {
+                    boxed_model[l] = boxed_model[l] + learning_rate * (sampled_output[z] - result) * sampled_input[l];
+                }
+            }
+
+        } else {
+            let X: DMatrix<f64> = DMatrix::<f64>::from_column_slice(input_size / input_sample_size, input_sample_size, input_slice);
+            let Y: DMatrix<f64> = DMatrix::<f64>::from_column_slice(output_size / output_sample_size, output_sample_size, output_slice);
+
+
+            let mut W: DMatrix<f64> = ((X.transpose() * &X).try_inverse().unwrap().clone());
+
+
+            W = (W * X.transpose()) * &Y;
+
+            for i in 0..W.len()
+            {
+                boxed_model[i] = W.get(i).unwrap().clone();
+            }
+        }
+    }
+
+
+}
+
+//////////////////////////////////////////////////MLP MODEL///////////////////////////////////////////////////////////
 
 #[no_mangle]
 pub extern fn create_mlp_model(number_layer: usize, neurones_count: *mut i32) -> *mut Vec<f64> {
@@ -195,18 +330,8 @@ pub extern fn create_mlp_model(number_layer: usize, neurones_count: *mut i32) ->
 }
 
 #[no_mangle]
-pub extern fn get_weights(model: *mut Vec<f64>, index: usize) -> f64
-{
-    let boxed_model;
-    unsafe {
-        boxed_model = model.as_ref().unwrap();
-    }
-    boxed_model[index]
-}
-
-#[no_mangle]
-pub extern fn predict_mlp_model_classification(model: *mut Vec<f64>,
-                                                  inputs: *mut f64, inputs_size: usize, number_layer: usize, neurones_count: *mut i32) -> f64
+pub extern fn predict_mlp_model(model: *mut Vec<f64>,
+                                                  inputs: *mut f64, inputs_size: usize, number_layer: usize, neurones_count: *mut i32,  is_classification: bool) -> f64
 {
     let boxed_model;
     let inputs_slice;
@@ -250,7 +375,12 @@ pub extern fn predict_mlp_model_classification(model: *mut Vec<f64>,
             {
                 sum += neurones_values[l - 1][i as usize] * vec_boxed_model[l][i as usize][j as usize];
             }
-            neurones_values[l][j as usize] = sum.tanh()
+            if l == L && !is_classification {
+                neurones_values[l][j as usize] = sum;
+            }
+            else {
+                neurones_values[l][j as usize] = sum.tanh();
+            }
         }
     }
 
@@ -258,70 +388,9 @@ pub extern fn predict_mlp_model_classification(model: *mut Vec<f64>,
 
 }
 
-
-#[no_mangle]
-pub extern fn predict_linear_model_classification(model: *mut Vec<f64>,
-                                                  inputs: *mut f64, inputs_size: usize) -> f64
-{
-    let boxed_model;
-    let inputs_slice;
-
-    unsafe {
-        //Récupération des contenus des pointeurs
-        boxed_model = model.as_ref().unwrap();
-        inputs_slice = from_raw_parts(inputs, inputs_size);
-    }
-
-    let mut sum = 0.0;
-
-    //prédictions
-        for i  in 0..inputs_slice.len() {
-            sum += inputs_slice[i] * boxed_model[i];
-        }
-
-        let biais = 1.0;
-
-        sum += biais * boxed_model[inputs_slice.len()];
-
-        sign(sum)
-
-
-}
-
-
-#[no_mangle]
-pub extern fn predict_linear_model_multiclass_classification(model: *mut Vec<f64>,
-                                                             inputs: *mut f64, inputs_size: usize, class_count: usize) -> *mut f64
-{
-    let boxed_model;
-    let inputs_slice;
-
-    unsafe {
-        boxed_model = model.as_ref().unwrap();
-        inputs_slice = from_raw_parts(inputs, inputs_size);
-    }
-
-    let mut sum = 0.0;
-
-    // TODO
-    for elt in inputs_slice {
-        sum += elt;
-    }
-
-    let mut result = Vec::with_capacity(class_count);
-    result.push(42.0);
-    result.push(51.0);
-    result.push(69.0);
-
-    let boxed_result = result.into_boxed_slice();
-    let boxed_result_leaked = Box::leak(boxed_result);
-    return boxed_result_leaked.as_mut_ptr();
-}
-
-
 #[no_mangle]
 pub extern fn train_mlp_model_class(model: *mut Vec<f64>, number_layer: usize, dataset_size: usize, neurones_count: *mut i32,  inputs: *mut f64, input_size: usize, input_sample_size: usize,
-                                output: *mut f64, output_size: usize, output_sample_size: usize, epochs: i32, learning_rate: f64)
+                                output: *mut f64, output_size: usize, output_sample_size: usize, epochs: i32, learning_rate: f64,  is_classification: bool)
 {
     let mut boxed_model;
     let input_slice;
@@ -421,6 +490,10 @@ pub extern fn train_mlp_model_class(model: *mut Vec<f64>, number_layer: usize, d
         for j in 1..neurones_count_slice[L] + 1
         {
             deltas[L][j as usize] = neurones_values[L][j as usize] - sampled_output[j as usize - 1];
+            if is_classification
+            {
+                deltas[L][j as usize] = deltas[L][j as usize] * (1.0 - power(neurones_values[L][j as usize], 2));
+            }
         }
 
         for l in (2..L + 1).rev()
@@ -452,72 +525,59 @@ pub extern fn train_mlp_model_class(model: *mut Vec<f64>, number_layer: usize, d
 
 }
 
-
 #[no_mangle]
-pub extern fn train_model_class(model: *mut Vec<f64>, inputs: *mut f64, input_size: usize, input_sample_size: usize,
-                                output: *mut f64, output_size: usize, output_sample_size: usize, learning_rate: f64)
+pub extern fn predict_mlp_model_multiclass(model: *mut Vec<f64>,
+                                inputs: *mut f64, inputs_size: usize, number_layer: usize, neurones_count: *mut i32,  is_classification: bool) -> f64
 {
-    let mut boxed_model;
-    let mut input_slice;
-    let mut output_slice;
+    let boxed_model;
+    let inputs_slice;
+    let neurones_count_slice;
+    let L = number_layer - 1;
+
+
     unsafe {
+        //Récupération des contenus des pointeurs
         boxed_model = &mut *model;
-        input_slice = from_raw_parts(inputs, input_size);
-        output_slice = from_raw_parts(output, output_size);
+        inputs_slice = from_raw_parts(inputs, inputs_size);
+        neurones_count_slice = from_raw_parts(neurones_count, number_layer);
     }
 
-    let dataset_size = output_size/output_sample_size;
+    let mut vec_boxed_model = weight_array_1dto3d(boxed_model, neurones_count_slice);
+
+    let mut neurones_values = vec![vec![0.0; 0]; number_layer];
+
+    neurones_values[0].push(1.0);
+    for i in 0..inputs_size
+    {
+        neurones_values[0].push(inputs_slice[i])
+    }
 
 
-    let mut result=0.0;
-    let biais = 1.0;
+    for i in 1..neurones_count_slice.len(){
 
-    for i in 0..dataset_size{
-
-
-        for j in (i * output_sample_size).. (i * output_sample_size + output_sample_size){
-
-            //TODO: Optimiser la prédictions ici
-            //Prédictions
-            result=0.0;
-            for k in (i * input_sample_size).. (i * input_sample_size + input_sample_size){
-
-                result += input_slice[k]*boxed_model[k%input_sample_size];
-
-            }
-            result += biais*boxed_model[input_sample_size];
-
-            result = sign(result);
-
-
-            //Mise a jour des poids
-            // W[i] = W[i] + r * error * Input[i]
-            if result != output_slice[j]
-            {
-                let mut last_index = 0;
-                for l in (i * input_sample_size).. (i * input_sample_size + input_sample_size)
-                {
-                    boxed_model[l%input_sample_size] = boxed_model[l%input_sample_size] + learning_rate * (output_slice[j] - result) * input_slice[l];
-                    last_index = l;
-                }
-                boxed_model[(last_index%input_sample_size) + 1] = boxed_model[(last_index%input_sample_size) + 1] + learning_rate * (output_slice[j] - result);
-
-            }
-
+        neurones_values[i].push(1.0);
+        for j in 0..neurones_count_slice[i]
+        {
+            neurones_values[i].push(0.0)
         }
     }
 
-}
-
-#[no_mangle]
-pub extern fn delete_native_array(arr: *mut f64)
-{
-    unsafe {
-        Box::from_raw(arr);
+    for l in 1..(L + 1)
+    {
+        for j in 1..(neurones_count_slice[l] + 1)
+        {
+            let mut sum:f64 = 0.0;
+            for i in 0..(neurones_count_slice[l - 1] + 1)
+            {
+                sum += neurones_values[l - 1][i as usize] * vec_boxed_model[l][i as usize][j as usize];
+            }
+            neurones_values[l][j as usize] = sum.tanh()
+        }
     }
+
+    neurones_values.last().cloned().unwrap().last().cloned().unwrap()
+
 }
-
-
 #[no_mangle]
 pub extern fn delete_linear_model(model: *mut Vec<f64>)
 {
