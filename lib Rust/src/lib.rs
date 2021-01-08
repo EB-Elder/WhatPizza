@@ -1,4 +1,6 @@
 use std::slice::{from_raw_parts};
+use std::os::raw::c_char;
+use std::ffi::CString;
 use rand::Rng;
 use nalgebra::*;
 
@@ -290,9 +292,6 @@ pub extern fn create_mlp_model(number_layer: usize, neurones_count: *mut i32) ->
 
     //Initialisation du model lineaire avec une taille défini + un biais
 
-
-
-
     //Nombre de neurones par couche cachées
     let mut npl;
     unsafe {
@@ -331,7 +330,7 @@ pub extern fn create_mlp_model(number_layer: usize, neurones_count: *mut i32) ->
 
 #[no_mangle]
 pub extern fn predict_mlp_model(model: *mut Vec<f64>,
-                                                  inputs: *mut f64, inputs_size: usize, number_layer: usize, neurones_count: *mut i32,  is_classification: bool) -> f64
+                                                  inputs: *mut f64, inputs_size: usize, number_layer: usize, neurones_count: *mut i32,  is_classification: bool) -> *mut c_char
 {
     let boxed_model;
     let inputs_slice;
@@ -384,7 +383,20 @@ pub extern fn predict_mlp_model(model: *mut Vec<f64>,
         }
     }
 
-    neurones_values.last().cloned().unwrap().last().cloned().unwrap()
+
+    let mut result_string = "".to_string();
+
+    for i in 1..neurones_values[L].len()
+    {
+        let tmp = neurones_values[L][i].to_string()+";";
+        result_string.push_str(&tmp);
+    }
+
+    let pntr = CString::new(result_string).unwrap().into_raw();
+
+    pntr
+
+
 
 }
 
@@ -481,7 +493,12 @@ pub extern fn train_mlp_model_class(model: *mut Vec<f64>, number_layer: usize, d
                 {
                     sum += neurones_values[l - 1][i as usize] * vec_boxed_model[l][i as usize][j as usize];
                 }
-                neurones_values[l][j as usize] = sum.tanh();
+                if l == L && !is_classification {
+                    neurones_values[l][j as usize] = sum;
+                }
+                else {
+                    neurones_values[l][j as usize] = sum.tanh();
+                }
             }
         }
 
@@ -525,59 +542,6 @@ pub extern fn train_mlp_model_class(model: *mut Vec<f64>, number_layer: usize, d
 
 }
 
-#[no_mangle]
-pub extern fn predict_mlp_model_multiclass(model: *mut Vec<f64>,
-                                inputs: *mut f64, inputs_size: usize, number_layer: usize, neurones_count: *mut i32,  is_classification: bool) -> f64
-{
-    let boxed_model;
-    let inputs_slice;
-    let neurones_count_slice;
-    let L = number_layer - 1;
-
-
-    unsafe {
-        //Récupération des contenus des pointeurs
-        boxed_model = &mut *model;
-        inputs_slice = from_raw_parts(inputs, inputs_size);
-        neurones_count_slice = from_raw_parts(neurones_count, number_layer);
-    }
-
-    let mut vec_boxed_model = weight_array_1dto3d(boxed_model, neurones_count_slice);
-
-    let mut neurones_values = vec![vec![0.0; 0]; number_layer];
-
-    neurones_values[0].push(1.0);
-    for i in 0..inputs_size
-    {
-        neurones_values[0].push(inputs_slice[i])
-    }
-
-
-    for i in 1..neurones_count_slice.len(){
-
-        neurones_values[i].push(1.0);
-        for j in 0..neurones_count_slice[i]
-        {
-            neurones_values[i].push(0.0)
-        }
-    }
-
-    for l in 1..(L + 1)
-    {
-        for j in 1..(neurones_count_slice[l] + 1)
-        {
-            let mut sum:f64 = 0.0;
-            for i in 0..(neurones_count_slice[l - 1] + 1)
-            {
-                sum += neurones_values[l - 1][i as usize] * vec_boxed_model[l][i as usize][j as usize];
-            }
-            neurones_values[l][j as usize] = sum.tanh()
-        }
-    }
-
-    neurones_values.last().cloned().unwrap().last().cloned().unwrap()
-
-}
 #[no_mangle]
 pub extern fn delete_linear_model(model: *mut Vec<f64>)
 {

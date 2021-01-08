@@ -13,4 +13,9 @@ public class sphereExposer : MonoBehaviour
     {
         _meshRenderer.material = newMat;
     }
+
+    public void changeZ(float Z)
+    {
+        myTransform.position = new Vector3(myTransform.position.x, myTransform.position.y, Z);
+    }
 }

@@ -16,18 +16,15 @@ public static class MlDllWrapper
     public static extern void trainLinearClass(System.IntPtr model, double[] inputs, int inputSize, int inputSampleSize,
         double[] ouputs, int outputSize, int outputSampleSize, double learningRate, bool isClassification, int epochs);
     
-    [DllImport("_2021_5A_3DJV_RustMLDll", EntryPoint = "predict_linear_model_multiclass")]
-    public static extern System.IntPtr PredictLinearModelMultiClass(System.IntPtr model,
-        double[] inputs, int inputSize, int classCount, bool isClassification);
 
     //////////////////////////////////////////////////MLP MODEL///////////////////////////////////////////////////////////
     
     
     [DllImport("_2021_5A_3DJV_RustMLDll", EntryPoint = "create_mlp_model")]
-    public static extern System.IntPtr CreateMLPModel(int numberHiddenLayer, int[] neuronesCount);
+    public static extern System.IntPtr CreateMLPModel(int numberLayer, int[] neuronesCount);
     
     [DllImport("_2021_5A_3DJV_RustMLDll", EntryPoint = "predict_mlp_model")]
-    public static extern double PredictMLPModel(System.IntPtr model,
+    public static extern System.IntPtr PredictMLPModel(System.IntPtr model,
         double[] inputs, int inputSize, int numberLayer, int[] npl, bool isClassification);
     
     [DllImport("_2021_5A_3DJV_RustMLDll", EntryPoint = "train_mlp_model_class")]
