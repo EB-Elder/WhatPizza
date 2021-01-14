@@ -1,3 +1,5 @@
+mod rbf;
+
 use std::slice::{from_raw_parts};
 use std::os::raw::c_char;
 use std::ffi::CString;
@@ -17,7 +19,6 @@ fn power(a: f64, power: i32) -> f64
 
 fn sign(value: f64) -> f64
 {
-
     if value >= 0.0
     {
         return 1.0;
@@ -541,6 +542,9 @@ pub extern fn train_mlp_model_class(model: *mut Vec<f64>, number_layer: usize, d
     weight_array_3dto1d(boxed_model, &vec_boxed_model, &neurones_count_slice);
 
 }
+
+////////////////////////////////////////////////////////RBF////////////////////////////////////////////////////////////////////////////
+
 
 #[no_mangle]
 pub extern fn delete_linear_model(model: *mut Vec<f64>)

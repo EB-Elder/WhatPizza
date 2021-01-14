@@ -13,3 +13,4 @@ crate-type = ["cdylib"]
 rand = "0.7.3"
 simple-matrix = "0.1.2"
 nalgebra = "0.24.0"
+ndarray = "0.14.0"
