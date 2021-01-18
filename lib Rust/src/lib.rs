@@ -1,163 +1,14 @@
 mod rbf;
+mod utils;
 
 use std::slice::{from_raw_parts};
 use std::os::raw::c_char;
 use std::ffi::CString;
 use rand::Rng;
 use nalgebra::*;
+use crate::rbf::RBF;
 
 
-fn power(a: f64, power: i32) -> f64
-{
-    let mut result = a;
-    for i in 1..power
-    {
-        result *= a;
-    }
-    result
-}
-
-fn sign(value: f64) -> f64
-{
-    if value >= 0.0
-    {
-        return 1.0;
-    }
-    return -1.0;
-
-}
-
-fn convert1dto2d(model:  &Vec<f64>, number_layer: usize, neurones_count_slice:  &[i32], input_size: usize) -> Vec<Vec<f64>>
-{
-    let mut model_result = vec![vec![0.0; input_size + 1];1];
-    let mut number_hidden_layer = number_layer - 1;
-
-    let mut tmp: Vec<f64>;
-
-
-    for width in 0..number_hidden_layer {
-
-
-
-        let mut column: usize = 0;
-        tmp = Vec::with_capacity(neurones_count_slice[width as usize] as usize + 1);
-        //N'entrera pas dans la boucle si width = 0
-        for i in 0..width
-        {
-            //On ajoute la taille de la colonne pour se déplacer en X dans le tableau
-            column += neurones_count_slice[width as usize] as usize
-        }
-
-        for depth in 0..neurones_count_slice[width as usize]+1
-        {
-
-            tmp.push(model[column + depth as usize]);
-        }
-
-    model_result.push(tmp.clone());
-
-    }
-
-    model_result
-}
-
-fn convert2dto1d(model: &mut Vec<f64>, vec_model:  &Vec<Vec<f64>>)
-{
-    let mut index_to_modify = 0;
-    for x in 0..vec_model.len()
-    {
-
-        for y in 0..vec_model[x].len()
-        {
-            model[index_to_modify] = vec_model[x][y];
-            index_to_modify+=1;
-        }
-    }
-}
-
-fn weight_array_1dto3d(model:  &Vec<f64>, npl:  &[i32]) -> Vec<Vec<Vec<f64>>>
-{
-    let mut result = vec![vec![vec![0.0; 0]]];
-
-    let mut counter:usize = 0;
-    for l in 0..npl.len()
-    {
-
-        if l == 0
-        {
-            result[0] = vec![vec![model[counter];1]];
-            counter+=1;
-            continue
-        }
-        let mut tmp0:Vec<Vec<f64>> = Vec::new();
-        for i in 0..npl[l-1]+1
-        {
-            let mut tmp1:Vec<f64>= Vec::new();
-            for j in 0..npl[l] + 1
-            {
-                tmp1.push(model[counter]);
-                counter+=1;
-            }
-            tmp0.push(tmp1);
-        }
-        result.push(tmp0);
-    }
-
-    result
-}
-
-fn weight_array_3dto1d(model:  &mut Vec<f64>,vec_boxed_model:  &Vec<Vec<Vec<f64>>>, npl:  &[i32])
-{
-    let mut counter:usize = 0;
-    let mut boxed_model;
-
-    unsafe {
-        boxed_model = &mut *model;
-    }
-
-    for l in 0..npl.len()
-    {
-
-        if l == 0
-        {
-            counter+=1;
-            continue
-        }
-        for i in 0..npl[l-1]+1
-        {
-            for j in 0..npl[l] + 1
-            {
-                boxed_model[counter] = vec_boxed_model[l][i as usize][j as usize];
-                counter+=1;
-            }
-        }
-    }
-}
-
-fn _predict_linear_model(model: *mut Vec<f64>, inputs: &Vec<f64>, inputs_size: usize,  is_classification: bool) -> f64
-{
-    let boxed_model;
-
-    unsafe {
-        //Récupération des contenus des pointeurs
-        boxed_model = model.as_ref().unwrap();
-    }
-
-    let mut sum = 0.0;
-
-    //prédictions
-    for i  in 0..inputs.len() {
-        sum += inputs[i] * boxed_model[i];
-    }
-
-    if is_classification
-    {
-        return sign(sum);
-    }
-    sum
-
-
-}
 
 
 //////////////////////////////////////////////////LINEAR MODEL///////////////////////////////////////////////////////////
@@ -207,7 +58,7 @@ pub extern fn predict_linear_model(model: *mut Vec<f64>, inputs: *mut f64, input
 
     if is_classification
     {
-        return sign(sum);
+        return utils::sign(sum);
     }
     sum
 
@@ -252,7 +103,7 @@ pub extern fn train_linear_model_class(model: *mut Vec<f64>, inputs: *mut f64, i
                 sampled_output.push(output_slice[i]);
             }
 
-            let result = _predict_linear_model(model, &sampled_input, input_size, is_classification);
+            let result = utils::_predict_linear_model(model, &sampled_input, input_size, is_classification);
 
             //Mise a jour des poids
             // W[i] = W[i] + r * error * Input[i]
@@ -346,7 +197,7 @@ pub extern fn predict_mlp_model(model: *mut Vec<f64>,
         neurones_count_slice = from_raw_parts(neurones_count, number_layer);
     }
 
-    let mut vec_boxed_model = weight_array_1dto3d(boxed_model, neurones_count_slice);
+    let mut vec_boxed_model = utils::weight_array_1dto3d(boxed_model, neurones_count_slice);
 
     let mut neurones_values = vec![vec![0.0; 0]; number_layer];
 
@@ -421,7 +272,7 @@ pub extern fn train_mlp_model_class(model: *mut Vec<f64>, number_layer: usize, d
         neurones_count_slice = from_raw_parts(neurones_count, number_layer);
     }
 
-    let mut vec_boxed_model = weight_array_1dto3d(boxed_model, neurones_count_slice);
+    let mut vec_boxed_model = utils::weight_array_1dto3d(boxed_model, neurones_count_slice);
 
     let mut deltas:Vec<Vec<f64>> = Vec::new();
 
@@ -510,7 +361,7 @@ pub extern fn train_mlp_model_class(model: *mut Vec<f64>, number_layer: usize, d
             deltas[L][j as usize] = neurones_values[L][j as usize] - sampled_output[j as usize - 1];
             if is_classification
             {
-                deltas[L][j as usize] = deltas[L][j as usize] * (1.0 - power(neurones_values[L][j as usize], 2));
+                deltas[L][j as usize] = deltas[L][j as usize] * (1.0 - utils::power(neurones_values[L][j as usize], 2));
             }
         }
 
@@ -523,7 +374,7 @@ pub extern fn train_mlp_model_class(model: *mut Vec<f64>, number_layer: usize, d
                 {
                     sum += vec_boxed_model[l][i as usize][j as usize] * deltas[l][j as usize]
                 }
-                deltas[l as usize - 1][i as usize] = (1.0 - power(neurones_values[l as usize - 1][i as usize], 2)) * sum;
+                deltas[l as usize - 1][i as usize] = (1.0 - utils::power(neurones_values[l as usize - 1][i as usize], 2)) * sum;
             }
         }
 
@@ -539,12 +390,63 @@ pub extern fn train_mlp_model_class(model: *mut Vec<f64>, number_layer: usize, d
         }
     }
 
-    weight_array_3dto1d(boxed_model, &vec_boxed_model, &neurones_count_slice);
+    utils::weight_array_3dto1d(boxed_model, &vec_boxed_model, &neurones_count_slice);
 
 }
 
 ////////////////////////////////////////////////////////RBF////////////////////////////////////////////////////////////////////////////
+#[no_mangle]
+pub extern fn init_RBF(inputs: *mut f64, input_size: usize, input_sample_size: usize,
+                       output: *mut f64, output_size: usize, output_sample_size: usize, k: i32,) ->*mut RBF
+{
+    let mut input_vec;
+    let mut trainning_output;
 
+    unsafe {
+        input_vec = from_raw_parts(inputs, input_size).to_vec();
+        trainning_output = from_raw_parts(output, output_size).to_vec();
+    }
+
+    let trainning_input = utils::_1dto2dVec(&input_vec, input_size/input_sample_size, input_sample_size);
+
+    let mut test_input: Vec<Vec<f64>> = Vec::new();
+    let mut test_output: Vec<f64> = Vec::new();
+
+    for i in (trainning_input.len()*0.8 as usize)..trainning_input.len()
+    {
+        test_input.push(trainning_input[i].clone());
+    }
+
+    for i in (trainning_output.len()*0.8 as usize)..trainning_output.len()
+    {
+        test_output.push(trainning_output[i]);
+    }
+
+    let mut RBF = RBF::init(trainning_input, trainning_output, test_input, test_output, output_sample_size as i32, k);
+
+    RBF.fit();
+
+    let boxed_RBF = Box::new(RBF);
+    let boxed_ref = Box::leak(boxed_RBF);
+
+    boxed_ref
+}
+
+#[no_mangle]
+pub extern fn predict_RBF(RBF_model: *mut RBF, input_X: *mut f64, input_size: i32) -> i32
+{
+    let mut tst;
+    let mut boxed_ref;
+    unsafe {
+        tst = Box::from_raw(RBF_model);
+        boxed_ref = Box::leak(tst);
+    }
+
+    let resulted_index = boxed_ref.predict(input_X, input_size as usize);
+
+    resulted_index
+
+}
 
 #[no_mangle]
 pub extern fn delete_linear_model(model: *mut Vec<f64>)
