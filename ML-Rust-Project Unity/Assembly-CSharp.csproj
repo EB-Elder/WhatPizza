@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\MLDllWrapper.cs" />
+     <Compile Include="Assets\Scripts\Appli.cs" />
      <Compile Include="Assets\Scripts\CSVReader.cs" />
      <Compile Include="Assets\Scripts\PicReader.cs" />
      <Compile Include="Assets\Scripts\sphereExposer.cs" />

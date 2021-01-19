@@ -285,9 +285,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f60d890833eef4c458c0d565dc317b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  requestPicPath: "Dataset\\pizza ch\xE8vre miel0"
-  epochs: 100
-  npl: 000c000000040000000200000002000006000000
+  requestPicPath: Dataset\pizza hawaiana1
+  epochs: 500
+  npl: 000c0000100000001000000006000000
   learningRate: 0.10000000149011612
   isClassification: 1
 --- !u!4 &1738373773

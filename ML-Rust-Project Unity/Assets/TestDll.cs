@@ -237,43 +237,47 @@ public class TestDll : MonoBehaviour
     
     void Start()
     {
+
         
         
-        CsvReader.readCSVFile("TrainningData\\TrainningData.csv", ref inputList, ref outputList);
+        CsvReader.readCSVFile("TrainningData\\rbf.csv", ref inputList, ref outputList);
 
         trainningInput = inputList.ToArray();
         trainningOuput = outputList.ToArray();
+        
 
-        _inputSize = npl[0];
-        _outputSize = npl.Last();
-        numberLayer = npl.Length;
-        
-        if(CsvReader.inputCount != _inputSize)
-            Debug.LogError($"Input Length ({CsvReader.inputCount}) in CSV File don't match the npl input length ({_inputSize})");
-        
-        if(CsvReader.outputCount != _outputSize)
-            Debug.LogError($"Output Length ({CsvReader.outputCount}) in CSV File don't match the npl output length ({_outputSize})");
-        //MyModel = MlDllWrapper.CreateLinearModel(modelSize);
-        //CreateLinearMulticlass();
-        
-        
-        randomizeSpheres();
-        
-        testDataSet = new List<double[]>();
-        
-        foreach (sphereExposer sphere in spheres)
-        {
-            Vector3 pos = sphere.myTransform.position;
-            double[] tmp = new[] {(double)pos.x,  pos.y};
-            testDataSet.Add(tmp);
-        }  
-        
-        //trainModel();
-        
-        //predictOnDataSet();
 
-        MyModel = MlDllWrapper.CreateMLPModel(numberLayer, npl);
-        
+        //MlDllWrapper.InitRBF(trainningInput, trainningInput.Length, 784, trainningOuput, trainningOuput.Length, 10, 500);
+        // _inputSize = npl[0];
+        // _outputSize = npl.Last();
+        // numberLayer = npl.Length;
+        //
+        // if(CsvReader.inputCount != _inputSize)
+        //     Debug.LogError($"Input Length ({CsvReader.inputCount}) in CSV File don't match the npl input length ({_inputSize})");
+        //
+        // if(CsvReader.outputCount != _outputSize)
+        //     Debug.LogError($"Output Length ({CsvReader.outputCount}) in CSV File don't match the npl output length ({_outputSize})");
+        // //MyModel = MlDllWrapper.CreateLinearModel(modelSize);
+        // //CreateLinearMulticlass();
+        //
+        //
+        // randomizeSpheres();
+        //
+        // testDataSet = new List<double[]>();
+        //
+        // foreach (sphereExposer sphere in spheres)
+        // {
+        //     Vector3 pos = sphere.myTransform.position;
+        //     double[] tmp = new[] {(double)pos.x,  pos.y};
+        //     testDataSet.Add(tmp);
+        // }  
+        //
+        // //trainModel();
+        //
+        // //predictOnDataSet();
+        //
+        // MyModel = MlDllWrapper.CreateMLPModel(numberLayer, npl);
+
     }
 
     // Update is called once per frame
@@ -305,16 +309,16 @@ public class TestDll : MonoBehaviour
             }*/
             //predictOnDataSet();
             //predictLinearMulticlass();
-            predictMLPMulticlass();
+            //predictMLPMulticlass();
         }
         
         if (Input.GetKeyDown(KeyCode.T))
         {
-            print("Starting trainning");
-            MlDllWrapper.trainMLPModelClass(MyModel, numberLayer, trainningInput.Length / npl[0], npl, trainningInput,
-                trainningInput.Length, _inputSize, trainningOuput, trainningOuput.Length, _outputSize, epochs,
-                learningRate, isClassification);
-            print("Trainning Finished");
+            // print("Starting trainning");
+            // MlDllWrapper.trainMLPModelClass(MyModel, numberLayer, trainningInput.Length / npl[0], npl, trainningInput,
+            //     trainningInput.Length, _inputSize, trainningOuput, trainningOuput.Length, _outputSize, epochs,
+            //     learningRate, isClassification);
+            // print("Trainning Finished");
             //trainModel();
             //trainLinearMulticlass();
         }

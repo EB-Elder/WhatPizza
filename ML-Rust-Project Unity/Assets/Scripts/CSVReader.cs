@@ -42,7 +42,7 @@ public static class CsvReader
 
                     if (line != null)
                     {
-                        string[] entries = line.Split(';');
+                        string[] entries = line.Split(new []{';'}, StringSplitOptions.RemoveEmptyEntries);
 
 
                         
@@ -67,18 +67,21 @@ public static class CsvReader
 
                             for (int i = 0; i < entries.Length; i = i + 1)
                             {
-
+                                
                                 if (entete[i].Substring(0, 1) == "X")
                                 {
-
-                                    inputList.Add(Convert.ToDouble(entries[i].Replace(".", ",")));
-
+                                    string actualEntry = entries[i];
+                                    if (actualEntry.Contains("."))
+                                        actualEntry = actualEntry.Replace(".", ",");
+                                    inputList.Add(Convert.ToDouble(actualEntry));
                                 }
 
                                 else
                                 {
-
-                                    outputList.Add(Convert.ToDouble(entries[i].Replace(".", ",")));
+                                    string actualEntry = entries[i];
+                                    if (actualEntry.Contains("."))
+                                        actualEntry = actualEntry.Replace(".", ",");
+                                    outputList.Add(Convert.ToDouble(actualEntry));
 
                                 }
 

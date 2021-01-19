@@ -115,6 +115,7 @@ public class Appli : MonoBehaviour
                 double currentValue = Convert.ToDouble(arrayValuesasString[i].Replace('.', ','));
 
 
+                print($"{currentValue} and model {i}");
                 //print($"{currentValue} and model {i}");
                 if (currentValue > bestValue)
                 {
@@ -123,7 +124,7 @@ public class Appli : MonoBehaviour
                 }
             }
 
-            print($"{bestValue} and model {bestModel}");
+            print($"The best value is {bestValue} with the model {bestModel}");
 
         //Regression Lineaire
 

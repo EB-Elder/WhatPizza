@@ -32,7 +32,16 @@ public static class MlDllWrapper
         double[] ouputs, int outputSize, int outputSampleSize, int epochs, double learningRate, bool isClassification);
     
     
+    //////////////////////////////////////////////////RBF///////////////////////////////////////////////////////////
+
+    [DllImport("_2021_5A_3DJV_RustMLDll", EntryPoint = "init_RBF")]
+    public static extern System.IntPtr InitRBF(double[] input, int inputSize, int inputSampleSize,
+        double[] ouputs, int outputSize, int outputSampleSize, int k);
     
+    [DllImport("_2021_5A_3DJV_RustMLDll", EntryPoint = "predict_RBF")]
+    public static extern System.IntPtr PredictRBF(System.IntPtr rbf, double[] inputX, int inputSize);
+
+
     [DllImport("_2021_5A_3DJV_RustMLDll", EntryPoint = "delete_linear_model")]
     public static extern void DeleteLinearModel(System.IntPtr model);
 }
