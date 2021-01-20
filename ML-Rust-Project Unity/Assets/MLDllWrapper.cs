@@ -35,7 +35,7 @@ public static class MlDllWrapper
     //////////////////////////////////////////////////RBF///////////////////////////////////////////////////////////
 
     [DllImport("_2021_5A_3DJV_RustMLDll", EntryPoint = "init_RBF")]
-    public static extern System.IntPtr InitRBF(double[] input, int inputSize, int inputSampleSize,
+    public static extern void /*System.IntPtr*/ InitRBF(double[] input, int inputSize, int inputSampleSize,
         double[] ouputs, int outputSize, int outputSampleSize, int k);
     
     [DllImport("_2021_5A_3DJV_RustMLDll", EntryPoint = "predict_RBF")]

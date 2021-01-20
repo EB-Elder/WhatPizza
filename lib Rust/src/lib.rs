@@ -397,7 +397,7 @@ pub extern fn train_mlp_model_class(model: *mut Vec<f64>, number_layer: usize, d
 ////////////////////////////////////////////////////////RBF////////////////////////////////////////////////////////////////////////////
 #[no_mangle]
 pub extern fn init_RBF(inputs: *mut f64, input_size: usize, input_sample_size: usize,
-                       output: *mut f64, output_size: usize, output_sample_size: usize, k: i32,) ->*mut RBF
+                       output: *mut f64, output_size: usize, output_sample_size: usize, k: i32,) //->*mut RBF
 {
     let mut input_vec;
     let mut trainning_output;
@@ -426,10 +426,10 @@ pub extern fn init_RBF(inputs: *mut f64, input_size: usize, input_sample_size: u
 
     RBF.fit();
 
-    let boxed_RBF = Box::new(RBF);
+    /*let boxed_RBF = Box::new(RBF);
     let boxed_ref = Box::leak(boxed_RBF);
 
-    boxed_ref
+    boxed_ref*/
 }
 
 #[no_mangle]

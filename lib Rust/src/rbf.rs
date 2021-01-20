@@ -76,10 +76,10 @@ fn get_distance(x1: &Vec<f64>, x2: &Vec<f64>) -> f64
 {
     let mut sum = 0.0;
 
-
     for i in 0..x1.len()
     {
-        sum += power(x1[i] - x2[i], 2);
+
+        sum += (x1[i] - x2[i]).powf(2.0);
     }
 
     sum.sqrt()
@@ -95,8 +95,8 @@ fn kmeans(X: &Vec<Vec<f64>>, k: i32, max_iters: i32) -> (Vec<Vec<f64>>, Vec<Vec<
     for i in 0..k as usize
     {
 
-        let mut random_number = rand::thread_rng().gen_range(0, X.len()) as usize;
-
+        let mut rng = rand::thread_rng();
+        let mut random_number = rng.gen_range(0, X.len()) as usize;
 
         centroids.push(X[random_number].clone());
     }
@@ -129,13 +129,15 @@ fn kmeans(X: &Vec<Vec<f64>>, k: i32, max_iters: i32) -> (Vec<Vec<f64>>, Vec<Vec<
                 }
 
             }
-            if lower_distance != f64::INFINITY
+            /*if lower_distance < f64::INFINITY
             {
                 cluster_list[lower_distance as usize].push(x.clone());
             }
+
+             */
         }
 
-        cluster_list.retain(|x| !x.is_empty() );
+        /*cluster_list.retain(|x| !x.is_empty() );
 
         let mut prev_centroids = centroids.clone();
 
@@ -148,9 +150,10 @@ fn kmeans(X: &Vec<Vec<f64>>, k: i32, max_iters: i32) -> (Vec<Vec<f64>>, Vec<Vec<
 
         let pattern: f64 =  (sum_2d_vector(&prev_centroids) - sum_2d_vector(&centroids)).abs();
 
-        converged = (pattern == 0.0);
+        converged = (pattern == 0.0);*/
 
-        current_iter += 1
+        current_iter += 1;
+        break
     }
 
     //Standard deviation pas faite, peut être source de problème ?
@@ -399,7 +402,7 @@ impl RBF {
     {
         self.centroids = kmeans(&self.tX, self.k, 100).0;
 
-        let mut dmax = 0.0;
+        /*let mut dmax = 0.0;
 
         for i in &self.centroids
         {
@@ -424,7 +427,8 @@ impl RBF {
 
         let mut accuracy = self.get_Acc(&self.tX, &self.ty, &self.Weights, &self.centroids, std);
 
-        accuracy
+        accuracy*/
+        0.0
 
     }
 

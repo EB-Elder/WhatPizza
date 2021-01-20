@@ -244,10 +244,11 @@ public class TestDll : MonoBehaviour
 
         trainningInput = inputList.ToArray();
         trainningOuput = outputList.ToArray();
-        
 
 
-        //MlDllWrapper.InitRBF(trainningInput, trainningInput.Length, 784, trainningOuput, trainningOuput.Length, 10, 500);
+
+        MlDllWrapper.InitRBF(trainningInput, trainningInput.Length, 784, trainningOuput,
+            trainningOuput.Length, 10, 500);
         // _inputSize = npl[0];
         // _outputSize = npl.Last();
         // numberLayer = npl.Length;
