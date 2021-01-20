@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEditor;
@@ -24,6 +25,10 @@ public class Appli : MonoBehaviour
     private int numberLayer;
 
 
+    [SerializeField]
+    private string userRequestPathFile;
+
+
     [Range(0.0f, 1.0f)]
     [SerializeField] private double learningRate = 0.8f;
 
@@ -33,7 +38,8 @@ public class Appli : MonoBehaviour
 
     private List<double> outputList = new List<double>();
 
-    double[] requestInput = new double[32 * 32 * 3];
+    [SerializeField]
+    double[] requestInput = new double[16 * 16];
 
     double[] trainningInput;
 
@@ -44,6 +50,22 @@ public class Appli : MonoBehaviour
     private int _inputSize;
     private int _outputSize;
 
+
+
+    public static Texture2D Resize(Texture2D source, int newWidth, int newHeight)
+    {
+        source.filterMode = FilterMode.Point;
+        RenderTexture rt = RenderTexture.GetTemporary(newWidth, newHeight);
+        rt.filterMode = FilterMode.Point;
+        RenderTexture.active = rt;
+        Graphics.Blit(source, rt);
+        Texture2D nTex = new Texture2D(newWidth, newHeight);
+        nTex.ReadPixels(new Rect(0, 0, newWidth, newHeight), 0, 0);
+        nTex.Apply();
+        RenderTexture.active = null;
+        RenderTexture.ReleaseTemporary(rt);
+        return nTex;
+    }
 
     public static void SetTextureImporterFormat(Texture2D texture, bool isReadable)
     {
@@ -64,7 +86,17 @@ public class Appli : MonoBehaviour
 
     void requestPicRead()
     {
-        Texture2D image = Resources.Load<Texture2D>(requestPicPath);
+        Texture2D requestImage = Resources.Load<Texture2D>(requestPicPath);
+
+        SetTextureImporterFormat(requestImage, true);
+
+        Texture2D image = Resize(requestImage, 16, 16);
+
+        SetTextureImporterFormat(image, true);
+
+
+
+
 
         int count = 0;
 
@@ -79,12 +111,10 @@ public class Appli : MonoBehaviour
                 {
                     Color pixel = image.GetPixel(i, j);
 
-                    requestInput[count] = pixel.r;
+                    requestInput[count] = pixel.grayscale;
+
                     count = count + 1;
-                    requestInput[count] = pixel.g;
-                    count = count + 1;
-                    requestInput[count] = pixel.b;
-                    count = count + 1;
+
                 }
             }
 
@@ -153,8 +183,6 @@ public class Appli : MonoBehaviour
 
         MyModel = MlDllWrapper.CreateMLPModel(numberLayer, npl);
 
-        requestPicRead();
-
     }
 
     void Update()
@@ -162,6 +190,12 @@ public class Appli : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             predictMLPMulticlass();
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            File.Copy(userRequestPathFile, @".\Assets\Resources\Dataset\requestImage.jpg", true);
+            requestPicRead();
         }
 
         if (Input.GetKeyDown(KeyCode.T))
