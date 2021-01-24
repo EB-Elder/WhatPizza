@@ -162,38 +162,26 @@ public class TestDll : MonoBehaviour
                 numberLayer, npl, isClassification); 
             
             string [] arrayValuesasString = Marshal.PtrToStringAnsi(pointerToValues).Split(';');
+            
+            print(arrayValuesasString);
 
             for (int i = 0; i < _outputSize; i++)
             {
                 double currentValue = Convert.ToDouble(arrayValuesasString[i].Replace('.', ','));
-                
-                
-                print($"{currentValue} and model {i}");
-                if (currentValue > bestValue)
+
+
+                if (currentValue > 0)
                 {
-                    bestModel = i;
-                    bestValue = currentValue;
+                    spheres[j].ChangeMaterial(blueMat);
+                }
+                else
+                {
+                    spheres[j].ChangeMaterial(redMat);
                 }
             }
             
-            print(arrayValuesasString[0]);
             
-            //Regression Lineaire
-            spheres[j].changeZ((float) Convert.ToDouble(arrayValuesasString[0].Replace('.', ',')));
             
-            switch (bestModel)
-            {
-                default:
-                    spheres[j].ChangeMaterial(blueMat);
-                    break;
-                case 1:
-                    spheres[j].ChangeMaterial(redMat);
-                    break;
-                case 2:
-                    spheres[j].ChangeMaterial(greenMat);
-                    break;
-            }
-
             /*if(pointerToValues != IntPtr.Zero)
                 MlDllWrapper.DeleteLinearModel(pointerToValues);*/
 
@@ -249,35 +237,35 @@ public class TestDll : MonoBehaviour
 
         MlDllWrapper.InitRBF(trainningInput, trainningInput.Length, 784, trainningOuput,
             trainningOuput.Length, 10, 500);
-        // _inputSize = npl[0];
-        // _outputSize = npl.Last();
-        // numberLayer = npl.Length;
-        //
+        //  _inputSize = npl[0];
+        //  _outputSize = npl.Last();
+        //  numberLayer = npl.Length;
+        // //
         // if(CsvReader.inputCount != _inputSize)
         //     Debug.LogError($"Input Length ({CsvReader.inputCount}) in CSV File don't match the npl input length ({_inputSize})");
         //
         // if(CsvReader.outputCount != _outputSize)
         //     Debug.LogError($"Output Length ({CsvReader.outputCount}) in CSV File don't match the npl output length ({_outputSize})");
-        // //MyModel = MlDllWrapper.CreateLinearModel(modelSize);
+        //MyModel = MlDllWrapper.CreateLinearModel(modelSize);
         // //CreateLinearMulticlass();
         //
         //
-        // randomizeSpheres();
+        //randomizeSpheres();
         //
-        // testDataSet = new List<double[]>();
-        //
+        //  testDataSet = new List<double[]>();
+        // //
         // foreach (sphereExposer sphere in spheres)
         // {
         //     Vector3 pos = sphere.myTransform.position;
         //     double[] tmp = new[] {(double)pos.x,  pos.y};
         //     testDataSet.Add(tmp);
         // }  
-        //
-        // //trainModel();
-        //
-        // //predictOnDataSet();
-        //
-        // MyModel = MlDllWrapper.CreateMLPModel(numberLayer, npl);
+        // //
+        // // //trainModel();
+        // //
+        // // //predictOnDataSet();
+        // //
+        //  MyModel = MlDllWrapper.CreateMLPModel(numberLayer, npl);
 
     }
 
@@ -310,16 +298,16 @@ public class TestDll : MonoBehaviour
             }*/
             //predictOnDataSet();
             //predictLinearMulticlass();
-            //predictMLPMulticlass();
+            predictMLPMulticlass();
         }
         
         if (Input.GetKeyDown(KeyCode.T))
         {
-            // print("Starting trainning");
-            // MlDllWrapper.trainMLPModelClass(MyModel, numberLayer, trainningInput.Length / npl[0], npl, trainningInput,
-            //     trainningInput.Length, _inputSize, trainningOuput, trainningOuput.Length, _outputSize, epochs,
-            //     learningRate, isClassification);
-            // print("Trainning Finished");
+            print("Starting trainning");
+            MlDllWrapper.trainMLPModelClass(MyModel, numberLayer, trainningInput.Length / npl[0], npl, trainningInput,
+                trainningInput.Length, _inputSize, trainningOuput, trainningOuput.Length, _outputSize, epochs,
+                learningRate, isClassification);
+            print("Trainning Finished");
             //trainModel();
             //trainLinearMulticlass();
         }

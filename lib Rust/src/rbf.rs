@@ -87,7 +87,7 @@ fn get_distance(x1: &Vec<f64>, x2: &Vec<f64>) -> f64
 
 fn kmeans(X: &Vec<Vec<f64>>, k: i32, max_iters: i32) -> (Vec<Vec<f64>>, Vec<Vec<Vec<f64>>>)
 {
-    let mut cluster_list: Vec<Vec<Vec<f64>>> = vec![vec![vec![0.0; 0]; 0]; 0];
+    let mut cluster_list: Vec<Vec<Vec<f64>>> = Vec::new();
     let mut converged = false;
     let mut current_iter = 0;
     let mut centroids:Vec<Vec<f64>> = Vec::new();
@@ -105,7 +105,7 @@ fn kmeans(X: &Vec<Vec<f64>>, k: i32, max_iters: i32) -> (Vec<Vec<f64>>, Vec<Vec<
 
     while !converged && current_iter < max_iters
     {
-        cluster_list = vec![vec![vec![0.0; 0]; 0]; 0];
+        cluster_list = Vec::new();
 
 
         for i in 0..centroids.len()
@@ -118,26 +118,17 @@ fn kmeans(X: &Vec<Vec<f64>>, k: i32, max_iters: i32) -> (Vec<Vec<f64>>, Vec<Vec<
 
         for x in X
         {
-            let mut lower_distance = f64::INFINITY;
+            let mut all_distances :Vec<f64>= Vec::new();
 
             for c in &centroids
             {
-                let mut current_distance = get_distance(c, x);
-
-                if  current_distance < lower_distance {
-                    lower_distance = current_distance;
-                }
+                all_distances.push(get_distance(x, c));
 
             }
-            /*if lower_distance < f64::INFINITY
-            {
-                cluster_list[lower_distance as usize].push(x.clone());
-            }
-
-             */
+            cluster_list[argmin(&all_distances) as usize].push(vec![0.0; 10]);
         }
 
-        /*cluster_list.retain(|x| !x.is_empty() );
+        cluster_list.retain(|x| !x.is_empty() );
 
         let mut prev_centroids = centroids.clone();
 
@@ -150,7 +141,7 @@ fn kmeans(X: &Vec<Vec<f64>>, k: i32, max_iters: i32) -> (Vec<Vec<f64>>, Vec<Vec<
 
         let pattern: f64 =  (sum_2d_vector(&prev_centroids) - sum_2d_vector(&centroids)).abs();
 
-        converged = (pattern == 0.0);*/
+        converged = (pattern == 0.0);
 
         current_iter += 1;
         break
@@ -292,6 +283,23 @@ fn argmax(a: &Vec<f64>) -> f64
     }
 
     max_index as f64
+}
+
+fn argmin(a: &Vec<f64>) -> f64
+{
+    let mut min_value = f64::INFINITY;
+    let mut min_index = 0;
+
+    for i in 0..a.len()
+    {
+        if a[i] < min_value
+        {
+            min_value = a[i];
+            min_index = i;
+        }
+    }
+
+    min_index as f64
 }
 
 pub struct RBF {

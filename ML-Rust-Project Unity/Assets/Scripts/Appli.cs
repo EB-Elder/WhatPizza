@@ -39,7 +39,7 @@ public class Appli : MonoBehaviour
     private List<double> outputList = new List<double>();
 
     [SerializeField]
-    double[] requestInput = new double[16 * 16];
+    double[] requestInput = new double[32 * 32 * 3];
 
     double[] trainningInput;
 
@@ -90,7 +90,7 @@ public class Appli : MonoBehaviour
 
         SetTextureImporterFormat(requestImage, true);
 
-        Texture2D image = Resize(requestImage, 16, 16);
+        Texture2D image = Resize(requestImage, 32, 32);
 
         SetTextureImporterFormat(image, true);
 
@@ -111,7 +111,15 @@ public class Appli : MonoBehaviour
                 {
                     Color pixel = image.GetPixel(i, j);
 
-                    requestInput[count] = pixel.grayscale;
+                    requestInput[count] = pixel.r;
+
+                    count = count + 1;
+
+                    requestInput[count] = pixel.g;
+
+                    count = count + 1;
+
+                    requestInput[count] = pixel.b;
 
                     count = count + 1;
 

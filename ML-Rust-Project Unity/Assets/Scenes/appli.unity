@@ -286,10 +286,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   requestPicPath: Dataset\requestImage
-  epochs: 1000
-  npl: 00010000140000001400000006000000
-  userRequestPathFile: C:\Users\picol\OneDrive\Images\pizza hawaiana\pizza hawaiana6.jpg
-  learningRate: 0.05000000074505806
+  epochs: 1266
+  npl: 000100002000000006000000
+  userRequestPathFile: F:\Projet 2021\Machine Learning\WhatPizza\ML-Rust-Project
+    Unity\Assets\Resources\Dataset\pizza calzone0.jpg
+  learningRate: 0.009999999776482582
   isClassification: 1
   requestInput:
   - 0

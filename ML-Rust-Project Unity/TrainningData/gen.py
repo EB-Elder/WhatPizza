@@ -1,6 +1,6 @@
 import numpy as np
 inputCols = 2
-outputCols = 3
+outputCols = 2
 headArray = np.array([])
 finalArray = np.array([])
 
@@ -13,11 +13,8 @@ for i in range(inputCols):
 for i in range(outputCols):
     headArray = np.append(headArray, "Y"+str(i))
     
-X = np.random.random((500, (8*8*3)) * 2.0 - 1.0
-Y = np.array([[1.0, 0.0, 0.0] if -p[0] - p[1] - 0.5 > 0 and p[1] < 0 and p[0] - p[1] - 0.5 < 0 else 
-              [0.0, 1.0, 0.0] if -p[0] - p[1] - 0.5 < 0 and p[1] > 0 and p[0] - p[1] - 0.5 < 0 else 
-              [0.0, 0.0, 1.0] if -p[0] - p[1] - 0.5 < 0 and p[1] < 0 and p[0] - p[1] - 0.5 > 0 else 
-              [0.0, 0.0, 0.0]for p in X])
+X = np.random.random((500, 2))
+Y = np.array([1 if abs(p[0]) <= 0.3 or abs(p[1]) <= 0.3 else 0 for p in X])
 
 
 

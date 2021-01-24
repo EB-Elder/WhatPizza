@@ -62,7 +62,7 @@ public class PicReader : MonoBehaviour
         new Pizzatype(@"Resources\Dataset\pizza4fromages", "1;0;0;0;0;0")
         };
 
-        for (int i = 0; i < 16*16; i = i+1)
+        for (int i = 0; i < 32*32*3; i = i+1)
         {
             entete = entete + "X" + i + ";";
         }
@@ -98,7 +98,7 @@ public class PicReader : MonoBehaviour
                         {
                             Color pixel = image.GetPixel(i, j);
 
-                            line = line + pixel.grayscale + ";";
+                            line = line + pixel.r + ";" + pixel.g + ";" + pixel.b + ";";
 
 
 
