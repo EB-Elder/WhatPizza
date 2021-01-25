@@ -135,6 +135,79 @@ public class Appli : MonoBehaviour
         }
 
     }
+    
+    int myArgMax(double[] tabArray, int start, int end)
+    {
+        int argmax = 0;
+        double bestValue = -999999.0;
+
+        for (int i = start; i < end; i++)
+        {
+            if (tabArray[i] > bestValue)
+            {
+                bestValue = tabArray[i];
+                argmax = i - start;
+            }
+        }
+        
+        return argmax;
+    }
+    
+    void evaluateDataset()
+    {
+        float goodPrediction = 0.0f;
+        for (int i = 0; i < trainningInput.Length/npl[0]; i++)
+        {
+            var result = predictDatasetSample(i);
+            var expected = myArgMax(trainningOuput, i * npl.Last(), (i + 1) * npl.Last());
+            if (result == expected)
+            {
+                goodPrediction++;
+            }
+        }
+
+        float accuracy = goodPrediction / (trainningInput.Length / npl[0]);
+        
+        print($"Accuracy = {accuracy}");
+
+    }
+
+    int predictDatasetSample(int k)
+    {
+        int bestModel = 0;
+        double bestValue = 0.0f;
+        List<double> tmp = new List<double>();
+
+        for (int i = k * npl[0]; i < npl[0] * (k + 1); i++)
+        {
+            tmp.Add(trainningInput[i]);
+        }
+
+        double[] tmp2 = tmp.ToArray();
+        
+        
+        
+        IntPtr pointerToValues = MlDllWrapper.PredictMLPModel(MyModel, tmp2, _inputSize,
+            numberLayer, npl, isClassification);
+        
+        string[] arrayValuesasString = Marshal.PtrToStringAnsi(pointerToValues).Split(';');
+
+        for (int i = 0; i < _outputSize; i++)
+        {
+            double currentValue = Convert.ToDouble(arrayValuesasString[i].Replace('.', ','));
+
+
+            // print($"{currentValue} and model {i}");
+            //print($"{currentValue} and model {i}");
+            if (currentValue > bestValue)
+            {
+                bestModel = i;
+                bestValue = currentValue;
+            }
+        }
+        
+        return bestModel;
+    }
  
 
     void predictMLPMulticlass()
@@ -212,6 +285,7 @@ public class Appli : MonoBehaviour
             MlDllWrapper.trainMLPModelClass(MyModel, numberLayer, trainningInput.Length / npl[0], npl, trainningInput,
                 trainningInput.Length, _inputSize, trainningOuput, trainningOuput.Length, _outputSize, epochs,
                 learningRate, isClassification);
+            evaluateDataset();
             print("Trainning Finished");
             
         }
@@ -220,5 +294,28 @@ public class Appli : MonoBehaviour
         {
             MlDllWrapper.DeleteLinearModel(MyModel);
         }
+        
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            StopAllCoroutines();
+
+            StartCoroutine(infiniteTrain());
+        }
+        
+    }
+
+    IEnumerator infiniteTrain()
+    {
+        int realEpochs = 0;
+        while (true)
+        {
+            MlDllWrapper.trainMLPModelClass(MyModel, numberLayer, trainningInput.Length / npl[0], npl, trainningInput,
+                trainningInput.Length, _inputSize, trainningOuput, trainningOuput.Length, _outputSize, epochs,
+                learningRate, isClassification);
+            evaluateDataset();
+            realEpochs++;
+            yield return null;
+        }
+        
     }
 }

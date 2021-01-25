@@ -123,9 +123,8 @@ fn kmeans(X: &Vec<Vec<f64>>, k: i32, max_iters: i32) -> (Vec<Vec<f64>>, Vec<Vec<
             for c in &centroids
             {
                 all_distances.push(get_distance(x, c));
-
             }
-            cluster_list[argmin(&all_distances) as usize].push(vec![0.0; 10]);
+            cluster_list[argmin(&all_distances) as usize].push(x.clone());
         }
 
         cluster_list.retain(|x| !x.is_empty() );
@@ -408,9 +407,9 @@ impl RBF {
 
     pub fn fit(&mut self) -> f64
     {
-        self.centroids = kmeans(&self.tX, self.k, 100).0;
+        self.centroids = kmeans(&self.tX, self.k, 10).0;
 
-        /*let mut dmax = 0.0;
+        let mut dmax = 0.0;
 
         for i in &self.centroids
         {
@@ -429,15 +428,15 @@ impl RBF {
 
         let hot_tr_y = self.convert_to_one_hot(&self.ty, self.num_of_classes);
 
-        let RBF_X_T = mat_T(&RBF_X);
+        /*let RBF_X_T = mat_T(&RBF_X);
 
         self.Weights = mat_dot(&mat_dot(&inv(mat_dot(&RBF_X_T, &RBF_X)), &RBF_X_T), &hot_tr_y);
 
         let mut accuracy = self.get_Acc(&self.tX, &self.ty, &self.Weights, &self.centroids, std);
 
         accuracy*/
-        0.0
 
+        0.0
     }
 
     pub fn predict(&mut self, input_X: *mut f64, inputs_size: usize) -> i32
