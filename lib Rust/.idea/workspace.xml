@@ -23,15 +23,10 @@
   <component name="ChangeListManager">
     <list default="true" id="cc236feb-6869-4a88-9914-eda21682f46e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../ML-Rust-Project Unity/Assets/Scenes/appli.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../ML-Rust-Project Unity/Assets/Scenes/appli.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ML-Rust-Project Unity/Assets/Scripts/Appli.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ML-Rust-Project Unity/Assets/Scripts/Appli.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ML-Rust-Project Unity/Assets/_2021_5A_3DJV_RustMLDll.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../ML-Rust-Project Unity/Assets/_2021_5A_3DJV_RustMLDll.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ML-Rust-Project Unity/Library/ArtifactDB" beforeDir="false" afterPath="$PROJECT_DIR$/../ML-Rust-Project Unity/Library/ArtifactDB" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ML-Rust-Project Unity/Library/Artifacts/f3/f376a93ca444b1868750e75e18f552c8" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ML-Rust-Project Unity/Library/CurrentLayout-default.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/../ML-Rust-Project Unity/Library/CurrentLayout-default.dwlt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ML-Rust-Project Unity/Library/ScriptAssemblies/Assembly-CSharp.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../ML-Rust-Project Unity/Library/ScriptAssemblies/Assembly-CSharp.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ML-Rust-Project Unity/Library/ScriptAssemblies/Assembly-CSharp.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../ML-Rust-Project Unity/Library/ScriptAssemblies/Assembly-CSharp.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ML-Rust-Project Unity/Library/SourceAssetDB" beforeDir="false" afterPath="$PROJECT_DIR$/../ML-Rust-Project Unity/Library/SourceAssetDB" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ML-Rust-Project Unity/TrainningData/TrainningData.csv" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,7 +172,7 @@
       <workItem from="1611312821011" duration="778000" />
       <workItem from="1611484679926" duration="14695000" />
       <workItem from="1611515525971" duration="2881000" />
-      <workItem from="1611571234334" duration="3340000" />
+      <workItem from="1611571234334" duration="8786000" />
     </task>
     <servers />
   </component>
@@ -197,31 +192,31 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1877" height="297" key="GridCell.Tab.0.bottom" timestamp="1611575175890">
+    <state width="1877" height="297" key="GridCell.Tab.0.bottom" timestamp="1611611235213">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="297" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1611575175890" />
+    <state width="1877" height="297" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1611611235213" />
     <state width="1877" height="297" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.2.1920.1040@1920.2.1920.1040" timestamp="1610453038563" />
     <state width="1877" height="185" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1280.690@0.0.1920.1050" timestamp="1603724005452" />
     <state width="1877" height="185" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1603725237091" />
-    <state width="1877" height="297" key="GridCell.Tab.0.center" timestamp="1611575175890">
+    <state width="1877" height="297" key="GridCell.Tab.0.center" timestamp="1611611235213">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="297" key="GridCell.Tab.0.center/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1611575175890" />
+    <state width="1877" height="297" key="GridCell.Tab.0.center/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1611611235213" />
     <state width="1877" height="297" key="GridCell.Tab.0.center/0.0.1920.1040/1920.2.1920.1040@1920.2.1920.1040" timestamp="1610453038563" />
     <state width="1877" height="185" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1280.690@0.0.1920.1050" timestamp="1603724005452" />
     <state width="1877" height="185" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1603725237091" />
-    <state width="1877" height="297" key="GridCell.Tab.0.left" timestamp="1611575175890">
+    <state width="1877" height="297" key="GridCell.Tab.0.left" timestamp="1611611235212">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="297" key="GridCell.Tab.0.left/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1611575175890" />
+    <state width="1877" height="297" key="GridCell.Tab.0.left/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1611611235212" />
     <state width="1877" height="297" key="GridCell.Tab.0.left/0.0.1920.1040/1920.2.1920.1040@1920.2.1920.1040" timestamp="1610453038563" />
     <state width="1877" height="185" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1280.690@0.0.1920.1050" timestamp="1603724005451" />
     <state width="1877" height="185" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1603725237091" />
-    <state width="1877" height="297" key="GridCell.Tab.0.right" timestamp="1611575175890">
+    <state width="1877" height="297" key="GridCell.Tab.0.right" timestamp="1611611235213">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="297" key="GridCell.Tab.0.right/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1611575175890" />
+    <state width="1877" height="297" key="GridCell.Tab.0.right/0.0.1920.1040/1920.2.1920.1040@0.0.1920.1040" timestamp="1611611235213" />
     <state width="1877" height="297" key="GridCell.Tab.0.right/0.0.1920.1040/1920.2.1920.1040@1920.2.1920.1040" timestamp="1610453038563" />
     <state width="1877" height="185" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1280.690@0.0.1920.1050" timestamp="1603724005452" />
     <state width="1877" height="185" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1603725237091" />

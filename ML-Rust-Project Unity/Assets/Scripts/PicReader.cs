@@ -111,7 +111,7 @@ public class PicReader : MonoBehaviour
 
                 else
                 {
-                    Debug.Log("bite");
+                    Debug.Log("Marche pas");
                 }
 
 

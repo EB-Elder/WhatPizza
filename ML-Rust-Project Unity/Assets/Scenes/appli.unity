@@ -286,7 +286,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   requestPicPath: Dataset\requestImage
-  epochs: 250
+  epochs: 30000
   npl: 000c00000c00000006000000
   userRequestPathFile: F:\Projet 2021\Machine Learning\WhatPizza\ML-Rust-Project
     Unity\Assets\Resources\Dataset\pizza calzone0.jpg
